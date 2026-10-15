@@ -1,0 +1,1932 @@
+{
+  "6d1e4f2a-0000-4000-8000-000000000007": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000007",
+    "name": "Lampe salon",
+    "driverId": "homey:app:com.philips.hue.zigbee:LCT015",
+    "ownerUri": "homey:app:com.philips.hue.zigbee",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000002",
+    "note": null,
+    "data": {
+      "id": "LCT015-7"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.philips.hue.zigbee-LCT015",
+      "url": "/api/icon/com.philips.hue.zigbee/LCT015.svg"
+    },
+    "class": "light",
+    "virtualClass": null,
+    "capabilities": [
+      "onoff",
+      "dim",
+      "light_hue",
+      "light_saturation",
+      "light_temperature",
+      "light_mode"
+    ],
+    "capabilitiesObj": {
+      "onoff": {
+        "id": "onoff",
+        "type": "boolean",
+        "title": "Allumé",
+        "getable": true,
+        "setable": true,
+        "value": true,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "dim": {
+        "id": "dim",
+        "type": "number",
+        "title": "Luminosité",
+        "getable": true,
+        "setable": true,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "decimals": 2,
+        "units": "%",
+        "value": 0.5,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "light_hue": {
+        "id": "light_hue",
+        "type": "number",
+        "title": "Teinte",
+        "getable": true,
+        "setable": true,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "decimals": 2,
+        "value": 0.6667,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "light_saturation": {
+        "id": "light_saturation",
+        "type": "number",
+        "title": "Saturation",
+        "getable": true,
+        "setable": true,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "decimals": 2,
+        "value": 1,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "light_temperature": {
+        "id": "light_temperature",
+        "type": "number",
+        "title": "Température de couleur",
+        "getable": true,
+        "setable": true,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "decimals": 2,
+        "value": 0.3,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "light_mode": {
+        "id": "light_mode",
+        "type": "enum",
+        "title": "Mode",
+        "getable": true,
+        "setable": true,
+        "values": [
+          {
+            "id": "color",
+            "title": "Couleur"
+          },
+          {
+            "id": "temperature",
+            "title": "Température"
+          }
+        ],
+        "value": "color",
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "quickAction": "onoff",
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000008": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000008",
+    "name": "Plafonnier",
+    "driverId": "homey:app:com.ikea.tradfri:bulb_ws",
+    "ownerUri": "homey:app:com.ikea.tradfri",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000003",
+    "note": null,
+    "data": {
+      "id": "bulb_ws-8"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.ikea.tradfri-bulb_ws",
+      "url": "/api/icon/com.ikea.tradfri/bulb_ws.svg"
+    },
+    "class": "light",
+    "virtualClass": null,
+    "capabilities": ["onoff", "dim", "light_temperature"],
+    "capabilitiesObj": {
+      "onoff": {
+        "id": "onoff",
+        "type": "boolean",
+        "title": "Allumé",
+        "getable": true,
+        "setable": true,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "dim": {
+        "id": "dim",
+        "type": "number",
+        "title": "Luminosité",
+        "getable": true,
+        "setable": true,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "decimals": 2,
+        "units": "%",
+        "value": 1,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "light_temperature": {
+        "id": "light_temperature",
+        "type": "number",
+        "title": "Température de couleur",
+        "getable": true,
+        "setable": true,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "decimals": 2,
+        "value": 0,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "quickAction": "onoff",
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000009": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000009",
+    "name": "Ampoule terrasse",
+    "driverId": "homey:app:com.ikea.tradfri:bulb",
+    "ownerUri": "homey:app:com.ikea.tradfri",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000006",
+    "note": null,
+    "data": {
+      "id": "bulb-9"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.ikea.tradfri-bulb",
+      "url": "/api/icon/com.ikea.tradfri/bulb.svg"
+    },
+    "class": "light",
+    "virtualClass": null,
+    "capabilities": ["onoff", "dim"],
+    "capabilitiesObj": {
+      "onoff": {
+        "id": "onoff",
+        "type": "boolean",
+        "title": "Allumé",
+        "getable": true,
+        "setable": true,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "dim": {
+        "id": "dim",
+        "type": "number",
+        "title": "Luminosité",
+        "getable": true,
+        "setable": true,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "decimals": 2,
+        "units": "%",
+        "value": 0.8,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "quickAction": "onoff",
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": false,
+    "unavailableMessage": "L'appareil ne répond pas",
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000010": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000010",
+    "name": "Prise TV",
+    "driverId": "homey:app:com.fibaro:FGWP102",
+    "ownerUri": "homey:app:com.fibaro",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000002",
+    "note": null,
+    "data": {
+      "id": "FGWP102-10"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.fibaro-FGWP102",
+      "url": "/api/icon/com.fibaro/FGWP102.svg"
+    },
+    "class": "socket",
+    "virtualClass": null,
+    "capabilities": ["onoff", "measure_power", "meter_power", "measure_voltage", "measure_current"],
+    "capabilitiesObj": {
+      "onoff": {
+        "id": "onoff",
+        "type": "boolean",
+        "title": "Allumé",
+        "getable": true,
+        "setable": true,
+        "value": true,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_power": {
+        "id": "measure_power",
+        "type": "number",
+        "title": "Puissance",
+        "getable": true,
+        "setable": false,
+        "units": "W",
+        "decimals": 1,
+        "value": 85.4,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "meter_power": {
+        "id": "meter_power",
+        "type": "number",
+        "title": "Énergie",
+        "getable": true,
+        "setable": false,
+        "units": "kWh",
+        "decimals": 2,
+        "value": 1234.56,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_voltage": {
+        "id": "measure_voltage",
+        "type": "number",
+        "title": "Tension",
+        "getable": true,
+        "setable": false,
+        "units": "V",
+        "decimals": 1,
+        "value": 231.2,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_current": {
+        "id": "measure_current",
+        "type": "number",
+        "title": "Courant",
+        "getable": true,
+        "setable": false,
+        "units": "A",
+        "decimals": 2,
+        "value": 0.37,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "quickAction": "onoff",
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000011": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000011",
+    "name": "Prise lampadaire",
+    "driverId": "homey:app:com.ikea.tradfri:control_outlet",
+    "ownerUri": "homey:app:com.ikea.tradfri",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000002",
+    "note": null,
+    "data": {
+      "id": "control_outlet-11"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.ikea.tradfri-control_outlet",
+      "url": "/api/icon/com.ikea.tradfri/control_outlet.svg"
+    },
+    "class": "socket",
+    "virtualClass": "light",
+    "capabilities": ["onoff"],
+    "capabilitiesObj": {
+      "onoff": {
+        "id": "onoff",
+        "type": "boolean",
+        "title": "Allumé",
+        "getable": true,
+        "setable": true,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "quickAction": "onoff",
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000012": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000012",
+    "name": "Module double",
+    "driverId": "homey:app:com.shelly:shelly25",
+    "ownerUri": "homey:app:com.shelly",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000003",
+    "note": null,
+    "data": {
+      "id": "shelly25-12"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.shelly-shelly25",
+      "url": "/api/icon/com.shelly/shelly25.svg"
+    },
+    "class": "socket",
+    "virtualClass": null,
+    "capabilities": ["onoff", "onoff.2", "measure_power"],
+    "capabilitiesObj": {
+      "onoff": {
+        "id": "onoff",
+        "type": "boolean",
+        "title": "Hotte",
+        "getable": true,
+        "setable": true,
+        "value": true,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "onoff.2": {
+        "id": "onoff.2",
+        "type": "boolean",
+        "title": "Plan de travail",
+        "getable": true,
+        "setable": true,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_power": {
+        "id": "measure_power",
+        "type": "number",
+        "title": "Puissance",
+        "getable": true,
+        "setable": false,
+        "units": "W",
+        "decimals": 1,
+        "value": 12.1,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "quickAction": "onoff",
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000013": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000013",
+    "name": "Volet salon",
+    "driverId": "homey:app:com.somfy.tahoma:roller_shutter",
+    "ownerUri": "homey:app:com.somfy.tahoma",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000002",
+    "note": null,
+    "data": {
+      "id": "roller_shutter-13"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.somfy.tahoma-roller_shutter",
+      "url": "/api/icon/com.somfy.tahoma/roller_shutter.svg"
+    },
+    "class": "windowcoverings",
+    "virtualClass": null,
+    "capabilities": ["windowcoverings_state", "windowcoverings_set"],
+    "capabilitiesObj": {
+      "windowcoverings_state": {
+        "id": "windowcoverings_state",
+        "type": "enum",
+        "title": "État du volet",
+        "getable": true,
+        "setable": true,
+        "values": [
+          {
+            "id": "up",
+            "title": "Haut"
+          },
+          {
+            "id": "idle",
+            "title": "Arrêt"
+          },
+          {
+            "id": "down",
+            "title": "Bas"
+          }
+        ],
+        "value": "idle",
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "windowcoverings_set": {
+        "id": "windowcoverings_set",
+        "type": "number",
+        "title": "Position",
+        "getable": true,
+        "setable": true,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "decimals": 2,
+        "units": "%",
+        "value": 0.4,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000014": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000014",
+    "name": "Rideau chambre",
+    "driverId": "homey:app:com.aqara:curtain_e1",
+    "ownerUri": "homey:app:com.aqara",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000004",
+    "note": null,
+    "data": {
+      "id": "curtain_e1-14"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.aqara-curtain_e1",
+      "url": "/api/icon/com.aqara/curtain_e1.svg"
+    },
+    "class": "curtain",
+    "virtualClass": null,
+    "capabilities": ["windowcoverings_set", "measure_battery"],
+    "capabilitiesObj": {
+      "windowcoverings_set": {
+        "id": "windowcoverings_set",
+        "type": "number",
+        "title": "Position",
+        "getable": true,
+        "setable": true,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "decimals": 2,
+        "units": "%",
+        "value": 1,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_battery": {
+        "id": "measure_battery",
+        "type": "number",
+        "title": "Batterie",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "min": 0,
+        "max": 100,
+        "value": 64,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000015": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000015",
+    "name": "Thermostat salon",
+    "driverId": "homey:app:com.netatmo:thermostat",
+    "ownerUri": "homey:app:com.netatmo",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000002",
+    "note": null,
+    "data": {
+      "id": "thermostat-15"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.netatmo-thermostat",
+      "url": "/api/icon/com.netatmo/thermostat.svg"
+    },
+    "class": "thermostat",
+    "virtualClass": null,
+    "capabilities": [
+      "target_temperature",
+      "measure_temperature",
+      "thermostat_mode",
+      "measure_humidity"
+    ],
+    "capabilitiesObj": {
+      "target_temperature": {
+        "id": "target_temperature",
+        "type": "number",
+        "title": "Température cible",
+        "getable": true,
+        "setable": true,
+        "min": 5,
+        "max": 30,
+        "step": 0.5,
+        "decimals": 1,
+        "units": "°C",
+        "value": 20.5,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_temperature": {
+        "id": "measure_temperature",
+        "type": "number",
+        "title": "Température",
+        "getable": true,
+        "setable": false,
+        "units": "°C",
+        "decimals": 1,
+        "value": 19.8,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "thermostat_mode": {
+        "id": "thermostat_mode",
+        "type": "enum",
+        "title": "Mode du thermostat",
+        "getable": true,
+        "setable": true,
+        "values": [
+          {
+            "id": "auto",
+            "title": "Automatique"
+          },
+          {
+            "id": "heat",
+            "title": "Chauffage"
+          },
+          {
+            "id": "cool",
+            "title": "Refroidissement"
+          },
+          {
+            "id": "off",
+            "title": "Éteint"
+          }
+        ],
+        "value": "heat",
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_humidity": {
+        "id": "measure_humidity",
+        "type": "number",
+        "title": "Humidité",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "value": 48,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000016": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000016",
+    "name": "Tête thermostatique",
+    "driverId": "homey:app:com.danfoss:ally",
+    "ownerUri": "homey:app:com.danfoss",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000004",
+    "note": null,
+    "data": {
+      "id": "ally-16"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.danfoss-ally",
+      "url": "/api/icon/com.danfoss/ally.svg"
+    },
+    "class": "thermostat",
+    "virtualClass": null,
+    "capabilities": [
+      "target_temperature",
+      "measure_temperature",
+      "measure_battery",
+      "alarm_battery"
+    ],
+    "capabilitiesObj": {
+      "target_temperature": {
+        "id": "target_temperature",
+        "type": "number",
+        "title": "Température cible",
+        "getable": true,
+        "setable": true,
+        "min": 4,
+        "max": 28,
+        "step": 0.5,
+        "decimals": 1,
+        "units": "°C",
+        "value": 17,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_temperature": {
+        "id": "measure_temperature",
+        "type": "number",
+        "title": "Température",
+        "getable": true,
+        "setable": false,
+        "units": "°C",
+        "decimals": 1,
+        "value": 17.6,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_battery": {
+        "id": "measure_battery",
+        "type": "number",
+        "title": "Batterie",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "min": 0,
+        "max": 100,
+        "value": 91,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "alarm_battery": {
+        "id": "alarm_battery",
+        "type": "boolean",
+        "title": "Alarme de batterie",
+        "getable": true,
+        "setable": false,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000017": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000017",
+    "name": "Capteur salon",
+    "driverId": "homey:app:com.xiaomi-mi:weather",
+    "ownerUri": "homey:app:com.xiaomi-mi",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000002",
+    "note": null,
+    "data": {
+      "id": "weather-17"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.xiaomi-mi-weather",
+      "url": "/api/icon/com.xiaomi-mi/weather.svg"
+    },
+    "class": "sensor",
+    "virtualClass": null,
+    "capabilities": [
+      "measure_temperature",
+      "measure_humidity",
+      "measure_pressure",
+      "measure_battery"
+    ],
+    "capabilitiesObj": {
+      "measure_temperature": {
+        "id": "measure_temperature",
+        "type": "number",
+        "title": "Température",
+        "getable": true,
+        "setable": false,
+        "units": "°C",
+        "decimals": 1,
+        "value": 21.3,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_humidity": {
+        "id": "measure_humidity",
+        "type": "number",
+        "title": "Humidité",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "value": 52,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_pressure": {
+        "id": "measure_pressure",
+        "type": "number",
+        "title": "Pression",
+        "getable": true,
+        "setable": false,
+        "units": "mbar",
+        "decimals": 1,
+        "value": 1013.2,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_battery": {
+        "id": "measure_battery",
+        "type": "number",
+        "title": "Batterie",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "min": 0,
+        "max": 100,
+        "value": 87,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000018": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000018",
+    "name": "Détecteur entrée",
+    "driverId": "homey:app:com.fibaro:FGMS-001",
+    "ownerUri": "homey:app:com.fibaro",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000005",
+    "note": null,
+    "data": {
+      "id": "FGMS-001-18"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.fibaro-FGMS-001",
+      "url": "/api/icon/com.fibaro/FGMS-001.svg"
+    },
+    "class": "sensor",
+    "virtualClass": null,
+    "capabilities": [
+      "alarm_motion",
+      "measure_luminance",
+      "measure_temperature",
+      "alarm_tamper",
+      "measure_battery"
+    ],
+    "capabilitiesObj": {
+      "alarm_motion": {
+        "id": "alarm_motion",
+        "type": "boolean",
+        "title": "Alarme de mouvement",
+        "getable": true,
+        "setable": false,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_luminance": {
+        "id": "measure_luminance",
+        "type": "number",
+        "title": "Luminosité",
+        "getable": true,
+        "setable": false,
+        "units": "lux",
+        "decimals": 0,
+        "value": 120,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_temperature": {
+        "id": "measure_temperature",
+        "type": "number",
+        "title": "Température",
+        "getable": true,
+        "setable": false,
+        "units": "°C",
+        "decimals": 1,
+        "value": 19.4,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "alarm_tamper": {
+        "id": "alarm_tamper",
+        "type": "boolean",
+        "title": "Alarme de sabotage",
+        "getable": true,
+        "setable": false,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_battery": {
+        "id": "measure_battery",
+        "type": "number",
+        "title": "Batterie",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "min": 0,
+        "max": 100,
+        "value": 100,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000019": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000019",
+    "name": "Porte d'entrée",
+    "driverId": "homey:app:com.aqara:door_sensor",
+    "ownerUri": "homey:app:com.aqara",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000005",
+    "note": null,
+    "data": {
+      "id": "door_sensor-19"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.aqara-door_sensor",
+      "url": "/api/icon/com.aqara/door_sensor.svg"
+    },
+    "class": "sensor",
+    "virtualClass": null,
+    "capabilities": ["alarm_contact", "alarm_battery", "measure_battery"],
+    "capabilitiesObj": {
+      "alarm_contact": {
+        "id": "alarm_contact",
+        "type": "boolean",
+        "title": "Alarme de contact",
+        "getable": true,
+        "setable": false,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "alarm_battery": {
+        "id": "alarm_battery",
+        "type": "boolean",
+        "title": "Alarme de batterie",
+        "getable": true,
+        "setable": false,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_battery": {
+        "id": "measure_battery",
+        "type": "number",
+        "title": "Batterie",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "min": 0,
+        "max": 100,
+        "value": 78,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000020": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000020",
+    "name": "Fuite cuisine",
+    "driverId": "homey:app:com.aqara:water_leak",
+    "ownerUri": "homey:app:com.aqara",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000003",
+    "note": null,
+    "data": {
+      "id": "water_leak-20"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.aqara-water_leak",
+      "url": "/api/icon/com.aqara/water_leak.svg"
+    },
+    "class": "sensor",
+    "virtualClass": null,
+    "capabilities": ["alarm_water", "measure_battery"],
+    "capabilitiesObj": {
+      "alarm_water": {
+        "id": "alarm_water",
+        "type": "boolean",
+        "title": "Alarme d'eau",
+        "getable": true,
+        "setable": false,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_battery": {
+        "id": "measure_battery",
+        "type": "number",
+        "title": "Batterie",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "min": 0,
+        "max": 100,
+        "value": 95,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000021": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000021",
+    "name": "Détecteur fumée",
+    "driverId": "homey:app:com.netatmo:smoke_co",
+    "ownerUri": "homey:app:com.netatmo",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000005",
+    "note": null,
+    "data": {
+      "id": "smoke_co-21"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.netatmo-smoke_co",
+      "url": "/api/icon/com.netatmo/smoke_co.svg"
+    },
+    "class": "sensor",
+    "virtualClass": null,
+    "capabilities": ["alarm_smoke", "alarm_co", "measure_battery"],
+    "capabilitiesObj": {
+      "alarm_smoke": {
+        "id": "alarm_smoke",
+        "type": "boolean",
+        "title": "Alarme de fumée",
+        "getable": true,
+        "setable": false,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "alarm_co": {
+        "id": "alarm_co",
+        "type": "boolean",
+        "title": "Alarme CO",
+        "getable": true,
+        "setable": false,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_battery": {
+        "id": "measure_battery",
+        "type": "number",
+        "title": "Batterie",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "min": 0,
+        "max": 100,
+        "value": 100,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000022": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000022",
+    "name": "Station Netatmo",
+    "driverId": "homey:app:com.netatmo:station",
+    "ownerUri": "homey:app:com.netatmo",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000002",
+    "note": null,
+    "data": {
+      "id": "station-22"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.netatmo-station",
+      "url": "/api/icon/com.netatmo/station.svg"
+    },
+    "class": "sensor",
+    "virtualClass": null,
+    "capabilities": [
+      "measure_temperature",
+      "measure_humidity",
+      "measure_co2",
+      "measure_noise",
+      "measure_pressure",
+      "measure_temperature.outside"
+    ],
+    "capabilitiesObj": {
+      "measure_temperature": {
+        "id": "measure_temperature",
+        "type": "number",
+        "title": "Température",
+        "getable": true,
+        "setable": false,
+        "units": "°C",
+        "decimals": 1,
+        "value": 21.9,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_humidity": {
+        "id": "measure_humidity",
+        "type": "number",
+        "title": "Humidité",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "value": 50,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_co2": {
+        "id": "measure_co2",
+        "type": "number",
+        "title": "CO2",
+        "getable": true,
+        "setable": false,
+        "units": "ppm",
+        "decimals": 0,
+        "value": 640,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_noise": {
+        "id": "measure_noise",
+        "type": "number",
+        "title": "Bruit",
+        "getable": true,
+        "setable": false,
+        "units": "dB",
+        "decimals": 0,
+        "value": 38,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_pressure": {
+        "id": "measure_pressure",
+        "type": "number",
+        "title": "Pression",
+        "getable": true,
+        "setable": false,
+        "units": "mbar",
+        "decimals": 1,
+        "value": 1012.5,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_temperature.outside": {
+        "id": "measure_temperature.outside",
+        "type": "number",
+        "title": "Température extérieure",
+        "getable": true,
+        "setable": false,
+        "units": "°C",
+        "decimals": 1,
+        "value": 9.4,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000023": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000023",
+    "name": "Purificateur",
+    "driverId": "homey:app:com.xiaomi-miio:airpurifier",
+    "ownerUri": "homey:app:com.xiaomi-miio",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000004",
+    "note": null,
+    "data": {
+      "id": "airpurifier-23"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.xiaomi-miio-airpurifier",
+      "url": "/api/icon/com.xiaomi-miio/airpurifier.svg"
+    },
+    "class": "airpurifier",
+    "virtualClass": null,
+    "capabilities": ["onoff", "measure_pm25"],
+    "capabilitiesObj": {
+      "onoff": {
+        "id": "onoff",
+        "type": "boolean",
+        "title": "Allumé",
+        "getable": true,
+        "setable": true,
+        "value": true,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_pm25": {
+        "id": "measure_pm25",
+        "type": "number",
+        "title": "PM2.5",
+        "getable": true,
+        "setable": false,
+        "units": "μg/m3",
+        "decimals": 0,
+        "value": 8,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "quickAction": "onoff",
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000024": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000024",
+    "name": "Serrure entrée",
+    "driverId": "homey:app:com.nuki:smartlock",
+    "ownerUri": "homey:app:com.nuki",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000005",
+    "note": null,
+    "data": {
+      "id": "smartlock-24"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.nuki-smartlock",
+      "url": "/api/icon/com.nuki/smartlock.svg"
+    },
+    "class": "lock",
+    "virtualClass": null,
+    "capabilities": ["locked", "measure_battery"],
+    "capabilitiesObj": {
+      "locked": {
+        "id": "locked",
+        "type": "boolean",
+        "title": "Verrouillé",
+        "getable": true,
+        "setable": true,
+        "value": true,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "measure_battery": {
+        "id": "measure_battery",
+        "type": "number",
+        "title": "Batterie",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "min": 0,
+        "max": 100,
+        "value": 70,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000025": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000025",
+    "name": "Bouton scène",
+    "driverId": "homey:app:vdevice:button",
+    "ownerUri": "homey:app:vdevice",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000002",
+    "note": null,
+    "data": {
+      "id": "button-25"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "vdevice-button",
+      "url": "/api/icon/vdevice/button.svg"
+    },
+    "class": "button",
+    "virtualClass": null,
+    "capabilities": ["button"],
+    "capabilitiesObj": {
+      "button": {
+        "id": "button",
+        "type": "boolean",
+        "title": "Bouton",
+        "getable": false,
+        "setable": true,
+        "value": null,
+        "lastUpdated": null,
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000026": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000026",
+    "name": "Compteur Linky",
+    "driverId": "homey:app:com.lixee:zlinky",
+    "ownerUri": "homey:app:com.lixee",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000001",
+    "note": null,
+    "data": {
+      "id": "zlinky-26"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.lixee-zlinky",
+      "url": "/api/icon/com.lixee/zlinky.svg"
+    },
+    "class": "sensor",
+    "virtualClass": null,
+    "capabilities": ["measure_power", "meter_power"],
+    "capabilitiesObj": {
+      "measure_power": {
+        "id": "measure_power",
+        "type": "number",
+        "title": "Puissance",
+        "getable": true,
+        "setable": false,
+        "units": "W",
+        "decimals": 1,
+        "value": 1540,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "meter_power": {
+        "id": "meter_power",
+        "type": "number",
+        "title": "Énergie",
+        "getable": true,
+        "setable": false,
+        "units": "kWh",
+        "decimals": 2,
+        "value": 23456.789,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000027": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000027",
+    "name": "Compteur gaz",
+    "driverId": "homey:app:com.gazpar:meter",
+    "ownerUri": "homey:app:com.gazpar",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000001",
+    "note": null,
+    "data": {
+      "id": "meter-27"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.gazpar-meter",
+      "url": "/api/icon/com.gazpar/meter.svg"
+    },
+    "class": "sensor",
+    "virtualClass": null,
+    "capabilities": ["meter_gas"],
+    "capabilitiesObj": {
+      "meter_gas": {
+        "id": "meter_gas",
+        "type": "number",
+        "title": "Gaz",
+        "getable": true,
+        "setable": false,
+        "units": "m³",
+        "decimals": 3,
+        "value": 4521.334,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000028": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000028",
+    "name": "Compteur eau",
+    "driverId": "homey:app:com.water:meter",
+    "ownerUri": "homey:app:com.water",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000003",
+    "note": null,
+    "data": {
+      "id": "meter-28"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.water-meter",
+      "url": "/api/icon/com.water/meter.svg"
+    },
+    "class": "sensor",
+    "virtualClass": null,
+    "capabilities": ["meter_water"],
+    "capabilitiesObj": {
+      "meter_water": {
+        "id": "meter_water",
+        "type": "number",
+        "title": "Eau",
+        "getable": true,
+        "setable": false,
+        "units": "m³",
+        "decimals": 3,
+        "value": 302.15,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000029": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000029",
+    "name": "Télécommande IKEA",
+    "driverId": "homey:app:com.ikea.tradfri:remote",
+    "ownerUri": "homey:app:com.ikea.tradfri",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000002",
+    "note": null,
+    "data": {
+      "id": "remote-29"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.ikea.tradfri-remote",
+      "url": "/api/icon/com.ikea.tradfri/remote.svg"
+    },
+    "class": "remote",
+    "virtualClass": null,
+    "capabilities": ["measure_battery"],
+    "capabilitiesObj": {
+      "measure_battery": {
+        "id": "measure_battery",
+        "type": "number",
+        "title": "Batterie",
+        "getable": true,
+        "setable": false,
+        "units": "%",
+        "decimals": 0,
+        "min": 0,
+        "max": 100,
+        "value": 55,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  },
+  "6d1e4f2a-0000-4000-8000-000000000030": {
+    "id": "6d1e4f2a-0000-4000-8000-000000000030",
+    "name": "Enceinte salon",
+    "driverId": "homey:app:com.sonos:speaker",
+    "ownerUri": "homey:app:com.sonos",
+    "zone": "a0f1c2d3-0000-4000-8000-000000000002",
+    "note": null,
+    "data": {
+      "id": "speaker-30"
+    },
+    "icon": null,
+    "iconOverride": null,
+    "iconObj": {
+      "id": "com.sonos-speaker",
+      "url": "/api/icon/com.sonos/speaker.svg"
+    },
+    "class": "speaker",
+    "virtualClass": null,
+    "capabilities": ["speaker_playing", "volume_set", "volume_mute"],
+    "capabilitiesObj": {
+      "speaker_playing": {
+        "id": "speaker_playing",
+        "type": "boolean",
+        "title": "Lecture",
+        "getable": true,
+        "setable": true,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "volume_set": {
+        "id": "volume_set",
+        "type": "number",
+        "title": "Volume",
+        "getable": true,
+        "setable": true,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.25,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      },
+      "volume_mute": {
+        "id": "volume_mute",
+        "type": "boolean",
+        "title": "Muet",
+        "getable": true,
+        "setable": true,
+        "value": false,
+        "lastUpdated": "2026-10-15T06:00:00.000Z",
+        "iconObj": null,
+        "options": {}
+      }
+    },
+    "settings": {},
+    "settingsObj": true,
+    "flags": [],
+    "energy": null,
+    "energyObj": null,
+    "ui": {
+      "components": []
+    },
+    "uiIndicator": null,
+    "available": true,
+    "unavailableMessage": null,
+    "warningMessage": null,
+    "ready": true,
+    "repair": false,
+    "unpair": true,
+    "images": [],
+    "color": "#ffffff",
+    "lastSeenAt": "2026-10-15T06:00:00.000Z"
+  }
+}

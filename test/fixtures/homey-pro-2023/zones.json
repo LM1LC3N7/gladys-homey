@@ -1,0 +1,56 @@
+{
+  "a0f1c2d3-0000-4000-8000-000000000001": {
+    "id": "a0f1c2d3-0000-4000-8000-000000000001",
+    "name": "Maison",
+    "parent": null,
+    "icon": "home",
+    "active": false,
+    "activeOrigins": [],
+    "activeLastUpdated": null
+  },
+  "a0f1c2d3-0000-4000-8000-000000000002": {
+    "id": "a0f1c2d3-0000-4000-8000-000000000002",
+    "name": "Salon",
+    "parent": "a0f1c2d3-0000-4000-8000-000000000001",
+    "icon": "livingRoom",
+    "active": false,
+    "activeOrigins": [],
+    "activeLastUpdated": null
+  },
+  "a0f1c2d3-0000-4000-8000-000000000003": {
+    "id": "a0f1c2d3-0000-4000-8000-000000000003",
+    "name": "Cuisine",
+    "parent": "a0f1c2d3-0000-4000-8000-000000000001",
+    "icon": "kitchen",
+    "active": false,
+    "activeOrigins": [],
+    "activeLastUpdated": null
+  },
+  "a0f1c2d3-0000-4000-8000-000000000004": {
+    "id": "a0f1c2d3-0000-4000-8000-000000000004",
+    "name": "Chambre",
+    "parent": "a0f1c2d3-0000-4000-8000-000000000001",
+    "icon": "bedroom",
+    "active": false,
+    "activeOrigins": [],
+    "activeLastUpdated": null
+  },
+  "a0f1c2d3-0000-4000-8000-000000000005": {
+    "id": "a0f1c2d3-0000-4000-8000-000000000005",
+    "name": "Entrée",
+    "parent": "a0f1c2d3-0000-4000-8000-000000000001",
+    "icon": "hallway",
+    "active": false,
+    "activeOrigins": [],
+    "activeLastUpdated": null
+  },
+  "a0f1c2d3-0000-4000-8000-000000000006": {
+    "id": "a0f1c2d3-0000-4000-8000-000000000006",
+    "name": "Jardin",
+    "parent": "a0f1c2d3-0000-4000-8000-000000000001",
+    "icon": "garden",
+    "active": false,
+    "activeOrigins": [],
+    "activeLastUpdated": null
+  }
+}

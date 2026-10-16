@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-16
+
 ### Added
 
 - Connection to a Homey Pro (Early 2023) through its local Web API, with an
@@ -31,3 +33,6 @@ the notes of the version's GitHub Release.
   unavailable (with its reason); degraded while the live updates are off.
 - "Test the connection" button: Homey version and address, devices, zones,
   devices offered, live updates.
+
+[Unreleased]: https://github.com/LM1LC3N7/gladys-homey/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/LM1LC3N7/gladys-homey/releases/tag/v0.1.1

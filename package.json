@@ -1,6 +1,6 @@
 {
   "name": "gladys-homey",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "Gladys Assistant external integration bridging the devices of a Homey Pro. Unofficial, not affiliated with Athom.",
   "type": "module",

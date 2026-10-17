@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-10-17
+
 ### Security
 
 - Unlocking a lock (its `locked` feature) from Gladys is now refused unless the
@@ -70,5 +72,6 @@ the notes of the version's GitHub Release.
 - "Test the connection" button: Homey version and address, devices, zones,
   devices offered, live updates.
 
-[Unreleased]: https://github.com/LM1LC3N7/gladys-homey/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/LM1LC3N7/gladys-homey/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/LM1LC3N7/gladys-homey/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/LM1LC3N7/gladys-homey/releases/tag/v0.1.1

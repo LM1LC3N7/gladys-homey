@@ -10,6 +10,26 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+### Security
+
+- Unlocking a lock from Gladys is now refused unless the new option "Allow
+  unlocking from Gladys" (`allow_unlock`, off by default) is on; locking is
+  always allowed. If you unlocked from Gladys (dashboard, scenes, voice
+  assistants), turn the option on.
+- The commands of Homey devices of class (or virtual class) garage door or
+  gate, valve or sprinkler, alarm or siren (their switch, cover, brightness and
+  button) are now refused unless their new option is on:
+  `allow_garage_door_control`, `allow_valve_control`, `allow_alarm_control`
+  (off by default). The check runs on every command, so devices added before
+  this version are covered too; their keys and external ids do not change.
+- Once allowed, such a command reads the device from Homey just before, and is
+  refused when that read fails, when Homey says the device is unavailable, or
+  when the state is unknown; it is decided on the state read, never on the one
+  in memory.
+- The commands of a device run one at a time, and are sent within 3.5 s of
+  their arrival or refused before anything leaves (Gladys waits 5 s for the
+  answer).
+
 ### Changed
 
 - README: the store install note replaces the work-in-progress notice, and the

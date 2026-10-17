@@ -78,6 +78,22 @@ left out.
   (0 to 300). A plug that reports its power every second is sent to Gladys at
   this pace. Switches, lights, buttons, motion and opening sensors are never
   delayed.
+- **Allow unlocking from Gladys** (off by default): without it, Gladys can lock
+  a lock, never unlock it.
+- **Allow garage door and gate control** (off by default): without it, the
+  commands of the Homey devices of class garage door or gate (switch, cover,
+  button) are refused.
+- **Allow valve and sprinkler control** (off by default): without it, opening
+  or cutting a valve or a sprinkler is refused.
+- **Allow alarm and siren control** (off by default): without it, arming,
+  disarming or silencing an alarm or a siren is refused.
+
+These commands still show as controllable in Gladys (the features are frozen
+when the device is created): the integration refuses them, with a message,
+while the option is off, devices added earlier included. Once allowed, each
+such command first reads the device again from Homey and is refused when its
+state is unknown or Homey says it is unavailable. The class used is the Homey
+one (or its virtual class, chosen in the Homey app).
 
 ## Good to know
 

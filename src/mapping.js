@@ -15,8 +15,9 @@
 //             are the capabilities it reads (a realtime event of one of them
 //             runs it); an `event` reader is a button press, never read from
 //             a stored value, and sent even when it is the same as the last,
-//   writers   { [key]: { write(value, device) -> [{ capabilityId, value }] } }
-//             (one capability set per entry; `device` is the last one read),
+//   writers   { [key]: { write(value, device) -> [{ capabilityId, value }],
+//             capabilityId, base } } (one capability set per entry; `device`
+//             is the last one read; `guardOf` tells the guarded ones),
 //   throttled the keys of the measurements (spaced by the sensor interval),
 //   skipped   the capabilities left out (nothing to map them to yet).
 // Value conventions: the Gladys side follows the enums of
@@ -221,6 +222,62 @@ const LABELS = {
 /** The capabilities whose feature is named after the device itself. */
 const MAIN = new Set(['onoff', 'windowcoverings_state', 'locked']);
 
+// --- Guarded commands (Louis's rule) ------------------------------------------------
+// Unlocking, opening a garage door, opening or cutting a valve, arming or
+// disarming an alarm: refused unless the user allowed it in the configuration
+// (src/app.js checks it on every command, with a state read just before). The
+// features stay writable: they are frozen when the user creates the device,
+// and the option can be turned on later.
+
+/** Homey class (or virtual class) -> the option its switch and cover commands need. */
+export const GUARDED_CLASSES = {
+  garagedoor: 'garage',
+  gate: 'garage',
+  valve: 'valve',
+  watervalve: 'valve',
+  gasvalve: 'valve',
+  sprinkler: 'valve',
+  irrigation: 'valve',
+  homealarm: 'alarm',
+  alarm: 'alarm',
+  siren: 'alarm',
+  securitysystem: 'alarm',
+  // A lock driving its bolt with a switch: both ways need allow_unlock.
+  lock: 'lock-any',
+};
+
+/** The commands guarded on such a class: what opens, cuts, arms or disarms. */
+const GUARDED_BASES = new Set([
+  'onoff',
+  'dim',
+  'windowcoverings_state',
+  'windowcoverings_set',
+  'button',
+]);
+
+/**
+ * The guard of a command on this device record (read just now when it matters):
+ *   'lock'      the locked capability (unlocking needs allow_unlock),
+ *   'lock-any'  a switch or a cover of a lock (allow_unlock both ways),
+ *   'garage' | 'valve' | 'alarm'  a switch or a cover of such a class,
+ *   undefined   no guard.
+ * @param {{ base: string }} writer
+ */
+export function guardOf(writer, device) {
+  if (writer?.base === 'locked') {
+    return 'lock';
+  }
+  if (!GUARDED_BASES.has(writer?.base)) {
+    return undefined;
+  }
+  for (const cls of [device?.virtualClass, device?.class]) {
+    if (typeof cls === 'string' && Object.hasOwn(GUARDED_CLASSES, cls)) {
+      return GUARDED_CLASSES[cls];
+    }
+  }
+  return undefined;
+}
+
 // --- The device -------------------------------------------------------------------
 
 class DeviceMapper {
@@ -292,7 +349,8 @@ class DeviceMapper {
       this.readers.push({ key, caps, read, event });
     }
     if (write) {
-      this.writers[key] = { write };
+      // `capabilityId` and `base`: what the guards of src/app.js look at.
+      this.writers[key] = { write, capabilityId: caps[0], base: baseOf(caps[0]) };
     }
     if (throttle) {
       this.throttled.add(key);
@@ -554,6 +612,7 @@ class DeviceMapper {
     );
   }
 
+  /** Locking is always allowed; unlocking (0) only with allow_unlock (src/app.js). */
   lock(id) {
     this.add(
       id,

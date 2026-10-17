@@ -170,6 +170,16 @@ export async function homeyServer({ key = KEY, id = HOMEY_ID, version = HOMEY_VE
         json(res, 200, sim.zones);
         return;
       }
+      const one = /^\/api\/manager\/devices\/device\/([^/]+)$/.exec(path);
+      if (req.method === 'GET' && one) {
+        const device = sim.devices[decodeURIComponent(one[1])];
+        if (!device) {
+          json(res, 404, { error: 'not_found', error_description: 'Device Not Found' });
+          return;
+        }
+        json(res, 200, device);
+        return;
+      }
       const set = /^\/api\/manager\/devices\/device\/([^/]+)\/capability\/([^/]+)$/.exec(path);
       if (req.method === 'PUT' && set) {
         const [deviceId, capabilityId] = [decodeURIComponent(set[1]), decodeURIComponent(set[2])];

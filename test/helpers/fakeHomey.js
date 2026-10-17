@@ -118,14 +118,27 @@ export function fakeHomey({ key = KEY } = {}) {
           return structuredClone(box.devices);
         });
       },
+      async device(deviceId, options) {
+        return call(config.url, 'device', { deviceId, options }, () => {
+          signed();
+          const device = box.devices[deviceId];
+          if (!device) {
+            throw new HomeyError('notfound', 'Device not found', { status: 404 });
+          }
+          return structuredClone(device);
+        });
+      },
       async zones() {
         return call(config.url, 'zones', {}, () => {
           signed();
           return structuredClone(box.zones);
         });
       },
-      async setCapability(deviceId, capabilityId, value) {
-        return call(config.url, 'setCapability', { deviceId, capabilityId, value }, () => {
+      async setCapability(deviceId, capabilityId, value, options) {
+        if (box.beforeSet) {
+          await box.beforeSet({ deviceId, capabilityId, value, options });
+        }
+        return call(config.url, 'setCapability', { deviceId, capabilityId, value, options }, () => {
           signed();
           const device = box.devices[deviceId];
           if (!device?.capabilitiesObj?.[capabilityId]) {

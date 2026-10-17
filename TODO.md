@@ -68,6 +68,18 @@ up to date at the end of every milestone.
 
 ## Decisions
 
+- **Guarded commands** (2026-10-17, Louis's rule): unlocking, and the switch,
+  cover, brightness and button commands of the classes garage door / gate,
+  valve / sprinkler, alarm / siren (class or virtual class, `GUARDED_CLASSES`
+  of src/mapping.js), are refused in `setValue` unless `allow_unlock`,
+  `allow_garage_door_control`, `allow_valve_control`, `allow_alarm_control`
+  is on (all off by default). The features stay writable (frozen at creation,
+  the option can be turned on later); keys and external ids are unchanged.
+  Allowed, the device is read (`GET /api/manager/devices/device/:id`) just
+  before and the command refused on a failed read, an unavailable device or
+  an unknown state. Commands are serialized per device and sent within 3.5 s
+  (Gladys ack: 5 s). To check on a real Homey: the single device endpoint.
+
 - **Own client, not `homey-api`** (Louis's rule: reuse maintained community
   work unless it brings debt). `homey-api` is Athom's official, actively
   maintained client (3.20.1, 2026-10-06; a 4.0 alpha), Node ≥ 22. Rejected

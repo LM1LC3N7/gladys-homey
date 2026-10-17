@@ -16,6 +16,7 @@ import {
   OPENING_SENSOR_STATE,
   THERMOSTAT_MODE,
   baseOf,
+  guardOf,
   hsToRgbInt,
   mapDevice,
   miredsToTemperature,
@@ -382,12 +383,46 @@ test('alarms: motion, contact (open is 0 in Gladys), leak, smoke, CO, tamper, ba
   assert.equal(smoke.read('alarm_smoke', smoke.withValue('alarm_smoke', null)), null);
 });
 
+test('the guarded commands: by capability and by class or virtual class', () => {
+  const device = (cls, virtualClass = null) => ({
+    id: 'g',
+    name: 'G',
+    class: cls,
+    virtualClass,
+    capabilities: ['onoff', 'windowcoverings_state', 'dim', 'button', 'target_temperature'],
+    capabilitiesObj: {},
+  });
+  const guards = (d) => {
+    const { writers } = mapDevice(d);
+    return Object.fromEntries(Object.entries(writers).map(([k, w]) => [k, guardOf(w, d)]));
+  };
+  const all = (g) => ({
+    onoff: g,
+    windowcoverings_state: g,
+    dim: g,
+    button: g,
+    target_temperature: undefined,
+  });
+  assert.deepEqual(guards(device('socket')), all(undefined));
+  assert.deepEqual(guards(device('valve')), all('valve'));
+  assert.deepEqual(guards(device('other', 'sprinkler')), all('valve'));
+  assert.deepEqual(guards(device('garagedoor')), all('garage'));
+  assert.deepEqual(guards(device('socket', 'garagedoor')), all('garage'));
+  assert.deepEqual(guards(device('homealarm')), all('alarm'));
+  assert.deepEqual(guards(device('siren')), all('alarm'));
+  assert.deepEqual(guards(device('lock')), all('lock-any'));
+  assert.equal(guardOf({ base: 'onoff' }, { class: 'constructor' }), undefined);
+  // The keys (external ids) are unchanged.
+  assert.deepEqual(Object.keys(mapDevice(device('valve')).writers), Object.keys(all()));
+});
+
 test('locks and buttons', () => {
   const lock = mapped('Serrure entrée');
   assert.deepEqual(spec(lock.features.locked), [C.LOCK, T.LOCK.BINARY, undefined, 0, 1, false]);
   assert.equal(lock.features.locked.name, 'Serrure entrée');
   assert.equal(lock.read('locked'), 1);
   assert.deepEqual(lock.write('locked', 0), [['locked', false]]);
+  assert.equal(guardOf(lock.result.writers.locked, lock.device), 'lock');
 
   const button = mapped('Bouton scène');
   assert.deepEqual(spec(button.features.button), [C.BUTTON, T.BUTTON.PUSH, undefined, 0, 1, false]);

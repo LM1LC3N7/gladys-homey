@@ -20,6 +20,7 @@ import { homeyCandidates } from './discovery.js';
 import { HomeyError, createClient } from './homey.js';
 import { T } from './i18n.js';
 import { asList, buildInventory, zoneNames } from './inventory.js';
+import { guardOf } from './mapping.js';
 import { StatePublisher } from './publisher.js';
 import { RealtimeError, openRealtime } from './realtime.js';
 
@@ -100,6 +101,8 @@ export class HomeyApp {
     this.lastStatus = undefined;
     this.publishedDevices = undefined;
     this.warned = new Set();
+    /** Homey device id -> the tail of its commands (one at a time per device) */
+    this.chains = new Map();
     this.publisher = new StatePublisher({ gladys, logger, now, timers });
   }
 
@@ -864,21 +867,150 @@ export class HomeyApp {
 
   // --- Commands ------------------------------------------------------------------
 
-  async setValue(device, feature, value) {
-    const client = this.client;
-    if (!client || !this.online) {
-      throw new Error('Homey is not connected');
+  /** Runs `task` after the previous task of the same key (a promise chain per device). */
+  serialized(key, task) {
+    const previous = this.chains.get(key) ?? Promise.resolve();
+    const run = previous.catch(() => {}).then(task);
+    const tail = run.catch(() => {});
+    this.chains.set(key, tail);
+    tail.then(() => {
+      if (this.chains.get(key) === tail) {
+        this.chains.delete(key);
+      }
+    });
+    return run;
+  }
+
+  /**
+   * Refuses a guarded command whose option is off (Louis's rule). Locking is
+   * always allowed; unlocking, garage doors, valves and alarms need their option.
+   */
+  checkAllowed(guard, value) {
+    const allow = this.config.allow ?? {};
+    if (guard === 'lock' && Number(value) > 0) {
+      return;
     }
+    if ((guard === 'lock' || guard === 'lock-any') && !allow.lock) {
+      throw new Error(
+        'Unlocking from Gladys is off: turn on "Allow unlocking" in the Homey integration settings',
+      );
+    }
+    if (guard === 'garage' && !allow.garage) {
+      throw new Error(
+        'Garage door control from Gladys is off: turn on "Allow garage door control" in the Homey integration settings',
+      );
+    }
+    if (guard === 'valve' && !allow.valve) {
+      throw new Error(
+        'Valve and sprinkler control from Gladys is off: turn on "Allow valve control" in the Homey integration settings',
+      );
+    }
+    if (guard === 'alarm' && !allow.alarm) {
+      throw new Error(
+        'Alarm and siren control from Gladys is off: turn on "Allow alarm control" in the Homey integration settings',
+      );
+    }
+  }
+
+  /** Refuses once the 5 s ack of Gladys is too near: nothing leaves after that. */
+  checkDeadline(deadline) {
+    if (this.now() > deadline) {
+      throw new Error('Homey answered too slowly: command not sent');
+    }
+  }
+
+  /** The timeout of a request of a command, from what is left before `deadline`. */
+  timeoutBefore(deadline, slack = 0) {
+    const left = deadline + slack - this.now();
+    return Math.max(TIMINGS.commandTimeoutMin, Math.min(TIMINGS.setValueDeadline + slack, left));
+  }
+
+  /**
+   * The device read from Homey just now, before a guarded command: refused
+   * when the read fails, when Homey says the device is unavailable (its
+   * values are the last known, maybe old), or when the capability has no value.
+   */
+  async freshRecord(client, id, capabilityId, deadline) {
+    let device;
+    try {
+      device = await client.device(id, { timeout: this.timeoutBefore(deadline) });
+    } catch (err) {
+      this.logger.warn(`Device ${id}: state not read before a guarded command (${err.message})`);
+      throw new Error('State unknown: Homey did not answer, command refused', { cause: err });
+    }
+    if (!device || device.id !== id) {
+      throw new Error('State unknown: command refused');
+    }
+    this.applyDevice(device);
+    if (device.available === false || device.ready === false) {
+      throw new Error(
+        'The device is unavailable in Homey: its state may be stale, command refused',
+      );
+    }
+    if (capabilityId !== undefined) {
+      const v = device.capabilitiesObj?.[capabilityId]?.value;
+      if (v === undefined || v === null) {
+        throw new Error('State unknown: command refused');
+      }
+    }
+    return device;
+  }
+
+  /**
+   * A Gladys command (acked within 5 s), serialized per Homey device. A
+   * guarded one (src/mapping.js guardOf) is checked against its option, on
+   * the device read just before, and sent only within the deadline.
+   */
+  async setValue(device, feature, value) {
+    const deadline = this.now() + TIMINGS.setValueDeadline;
     const writer = this.model.writers.get(feature.external_id);
     const id = this.model.owners.get(feature.external_id);
     if (!writer || id === undefined) {
       throw new Error(`${feature.name ?? feature.external_id} cannot be controlled`);
     }
-    const calls = writer.write(value, this.records.get(id));
-    for (const call of calls) {
-      await client.setCapability(id, call.capabilityId, call.value);
+    // Checked on the class known so far, then on the class read just before sending.
+    this.checkAllowed(guardOf(writer, this.records.get(id)), value);
+    if (!this.client || !this.online) {
+      throw new Error('Homey is not connected');
     }
-    this.logger.debug(`${calls.length} Homey capability set(s) for ${feature.external_id}`);
+    await this.serialized(id, async () => {
+      const client = this.client;
+      if (!client || !this.online) {
+        throw new Error('Homey is not connected');
+      }
+      this.checkDeadline(deadline);
+      let record = this.records.get(id);
+      let guard = guardOf(writer, record);
+      // The option may have changed while the command waited.
+      this.checkAllowed(guard, value);
+      // Locking is always allowed: sent at once, like the other commands.
+      if (guard && !(guard === 'lock' && Number(value) > 0)) {
+        // A button has no state of its own: only the device is checked.
+        const stateOf = writer.base === 'button' ? undefined : writer.capabilityId;
+        record = await this.freshRecord(client, id, stateOf, deadline);
+        guard = guardOf(writer, record);
+        this.checkAllowed(guard, value);
+        if (guard === 'lock') {
+          const locked = record.capabilitiesObj[writer.capabilityId].value;
+          if (typeof locked !== 'boolean') {
+            throw new Error('State unknown: command refused');
+          }
+          if (locked === Number(value) > 0) {
+            this.logger.debug(`${feature.external_id}: already in place, nothing sent`);
+            return;
+          }
+        }
+      }
+      const calls = writer.write(value, record);
+      for (const call of calls) {
+        this.checkDeadline(deadline);
+        this.checkAllowed(guard, value);
+        await client.setCapability(id, call.capabilityId, call.value, {
+          timeout: this.timeoutBefore(deadline, TIMINGS.commandSlack),
+        });
+      }
+      this.logger.debug(`${calls.length} Homey capability set(s) for ${feature.external_id}`);
+    });
     this.readSoon();
   }
 

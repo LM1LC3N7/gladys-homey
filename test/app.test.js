@@ -204,7 +204,7 @@ test('the Gladys commands set the Homey capabilities', async (t) => {
   ]);
   assert.deepEqual(await run(thermostat, 'target_temperature', 40), [['target_temperature', 30]]);
   assert.deepEqual(await run(thermostat, 'thermostat_mode', 3), [['thermostat_mode', 'auto']]);
-  assert.deepEqual(await run('Serrure entrée (Entrée)', 'locked', 0), [['locked', false]]);
+  assert.deepEqual(await run('Serrure entrée (Entrée)', 'locked', 1), [['locked', true]]);
 
   const button = await created(gladys, 'Bouton scène (Salon)');
   assert.deepEqual(await run('Bouton scène (Salon)', 'button', 1), [['button', true]]);
@@ -220,6 +220,212 @@ test('the Gladys commands set the Homey capabilities', async (t) => {
   const sensor = deviceNamed(gladys, 'Capteur salon (Salon)');
   const readOnly = await gladys.fake.setValue(sensor, featureOf(sensor, 'measure_temperature'), 20);
   assert.equal(readOnly.success, false);
+});
+
+const ENTREE = 'a0f1c2d3-0000-4000-8000-000000000005';
+
+/** A device added in Homey, as Homey would announce it. */
+async function addDevice(box, tick, { id, name, cls, virtualClass = null, caps }) {
+  const capabilitiesObj = Object.fromEntries(
+    Object.entries(caps).map(([capId, cap]) => [
+      capId,
+      { id: capId, getable: true, setable: true, lastUpdated: '2026-10-15T06:00:00.000Z', ...cap },
+    ]),
+  );
+  const device = {
+    id,
+    name,
+    zone: ENTREE,
+    class: cls,
+    virtualClass,
+    capabilities: Object.keys(caps),
+    capabilitiesObj,
+    available: true,
+    ready: true,
+  };
+  box.devices[id] = device;
+  box.emitManager('device.create', device);
+  await tick(TIMINGS.modelDebounce);
+  return device;
+}
+
+const COVER_VALUES = [{ id: 'up' }, { id: 'idle' }, { id: 'down' }];
+
+test('unlocking is refused by default, allowed by its option; locking always works', async (t) => {
+  const { gladys, box } = await setup(t);
+  const lock = await created(gladys, 'Serrure entrée (Entrée)');
+  const locked = featureOf(lock, 'locked');
+  assert.equal(locked.read_only, false, 'the feature stays writable: the option decides');
+
+  const denied = await gladys.fake.setValue(lock, locked, 0);
+  assert.equal(denied.success, false);
+  assert.match(denied.error, /Unlocking from Gladys is off/);
+  assert.equal(box.executed.length, 0, 'nothing sent');
+  assert.equal(box.callsOf('device').length, 0);
+
+  const ok = await gladys.fake.setValue(lock, locked, 1);
+  assert.equal(ok.success, true, 'locking is always allowed');
+
+  await gladys.fake.configUpdated({ ...CONFIG, allow_unlock: true });
+  await settle();
+  const unlocked = await gladys.fake.setValue(lock, locked, 0);
+  assert.equal(unlocked.success, true, unlocked.error);
+  assert.equal(box.callsOf('device').length, 1, 'the lock is read just before');
+  assert.deepEqual(
+    box.executed.map((c) => [c.capabilityId, c.value]),
+    [
+      ['locked', true],
+      ['locked', false],
+    ],
+  );
+  const timeout = box.callsOf('setCapability').at(-1).args.options.timeout;
+  assert.ok(timeout > 0 && timeout <= TIMINGS.setValueDeadline + TIMINGS.commandSlack);
+
+  const again = await gladys.fake.setValue(lock, locked, 0);
+  assert.equal(again.success, true);
+  assert.equal(box.executed.length, 2, 'already unlocked: nothing sent');
+
+  await gladys.fake.configUpdated({ ...CONFIG, allow_unlock: false });
+  await settle();
+  assert.equal((await gladys.fake.setValue(lock, locked, 0)).success, false, 'off again');
+});
+
+test('valves, sprinklers, garage doors and alarms need their option', async (t) => {
+  const { gladys, box, tick } = await setup(t);
+  await addDevice(box, tick, {
+    id: '6d1e4f2a-0000-4000-8000-0000000000a1',
+    name: 'Vanne eau',
+    cls: 'valve',
+    caps: { onoff: { type: 'boolean', value: true } },
+  });
+  await addDevice(box, tick, {
+    id: '6d1e4f2a-0000-4000-8000-0000000000a2',
+    name: 'Arrosage',
+    cls: 'other',
+    virtualClass: 'sprinkler',
+    caps: { onoff: { type: 'boolean', value: false } },
+  });
+  await addDevice(box, tick, {
+    id: '6d1e4f2a-0000-4000-8000-0000000000a3',
+    name: 'Porte garage',
+    cls: 'garagedoor',
+    caps: {
+      windowcoverings_state: { type: 'enum', value: 'idle', values: COVER_VALUES },
+      onoff: { type: 'boolean', value: false },
+    },
+  });
+  await addDevice(box, tick, {
+    id: '6d1e4f2a-0000-4000-8000-0000000000a4',
+    name: 'Sirène',
+    cls: 'siren',
+    caps: { onoff: { type: 'boolean', value: false } },
+  });
+  const valve = await created(gladys, 'Vanne eau (Entrée)');
+  const sprinkler = await created(gladys, 'Arrosage (Entrée)');
+  const garage = await created(gladys, 'Porte garage (Entrée)');
+  const siren = await created(gladys, 'Sirène (Entrée)');
+  const tries = [
+    [valve, 'onoff', 0, /Valve and sprinkler control from Gladys is off/],
+    [sprinkler, 'onoff', 1, /Valve and sprinkler control from Gladys is off/],
+    [garage, 'windowcoverings_state', 1, /Garage door control from Gladys is off/],
+    [garage, 'onoff', 1, /Garage door control from Gladys is off/],
+    [siren, 'onoff', 0, /Alarm and siren control from Gladys is off/],
+  ];
+  for (const [device, key, value, error] of tries) {
+    const feature = featureOf(device, key);
+    assert.equal(feature.read_only, false);
+    const ack = await gladys.fake.setValue(device, feature, value);
+    assert.equal(ack.success, false, `${device.name} ${key}`);
+    assert.match(ack.error, error);
+  }
+  assert.equal(box.executed.length, 0, 'nothing sent');
+
+  await gladys.fake.configUpdated({
+    ...CONFIG,
+    allow_valve_control: true,
+    allow_garage_door_control: true,
+    allow_alarm_control: true,
+  });
+  await settle();
+  for (const [device, key, value] of tries) {
+    const ack = await gladys.fake.setValue(device, featureOf(device, key), value);
+    assert.equal(ack.success, true, `${device.name} ${key}: ${ack.error}`);
+  }
+  assert.deepEqual(
+    box.executed.map((c) => [c.capabilityId, c.value]),
+    [
+      ['onoff', false],
+      ['onoff', true],
+      ['windowcoverings_state', 'up'],
+      ['onoff', true],
+      ['onoff', false],
+    ],
+  );
+  assert.equal(box.callsOf('device').length, tries.length, 'each one read just before');
+});
+
+test('a guarded command on an unknown or stale state is refused', async (t) => {
+  const { gladys, box } = await setup(t, { ...CONFIG, allow_unlock: true });
+  const lock = await created(gladys, 'Serrure entrée (Entrée)');
+  const locked = featureOf(lock, 'locked');
+  const record = box.device('Serrure entrée');
+
+  box.failOn.device = new HomeyError('timeout', 'no answer within 3 s');
+  let ack = await gladys.fake.setValue(lock, locked, 0);
+  assert.equal(ack.success, false);
+  assert.match(ack.error, /State unknown/);
+  box.failOn.device = undefined;
+
+  record.available = false;
+  ack = await gladys.fake.setValue(lock, locked, 0);
+  assert.equal(ack.success, false);
+  assert.match(ack.error, /unavailable in Homey/);
+  record.available = true;
+
+  record.capabilitiesObj.locked.value = null;
+  ack = await gladys.fake.setValue(lock, locked, 0);
+  assert.equal(ack.success, false);
+  assert.match(ack.error, /State unknown/);
+  assert.equal(box.executed.length, 0, 'nothing sent on a stale state');
+
+  // The state in memory says locked; Homey says unlocked now: nothing to send.
+  record.capabilitiesObj.locked.value = false;
+  ack = await gladys.fake.setValue(lock, locked, 0);
+  assert.equal(ack.success, true);
+  assert.equal(box.executed.length, 0, 'decided on the state read, not the one in memory');
+});
+
+test('the commands of a device run one at a time, within the ack delay', async (t) => {
+  const { gladys, box } = await setup(t);
+  const lamp = deviceNamed(gladys, 'Lampe salon (Salon)');
+  let active = 0;
+  let most = 0;
+  box.beforeSet = async () => {
+    active += 1;
+    most = Math.max(most, active);
+    await settle(3);
+    active -= 1;
+  };
+  const acks = await Promise.all([
+    gladys.fake.setValue(lamp, featureOf(lamp, 'onoff'), 0),
+    gladys.fake.setValue(lamp, featureOf(lamp, 'onoff'), 1),
+  ]);
+  assert.ok(acks.every((a) => a.success));
+  assert.equal(most, 1, 'never two at once on a device');
+  assert.deepEqual(
+    box.executed.map((c) => c.value),
+    [false, true],
+  );
+
+  // Homey slow: what is left is refused before it leaves (Gladys acks in 5 s).
+  box.beforeSet = async () => {
+    t.mock.timers.tick(TIMINGS.setValueDeadline + 500);
+  };
+  const before = box.executed.length;
+  const slow = await gladys.fake.setValue(lamp, featureOf(lamp, 'color'), 0xff0000);
+  assert.equal(slow.success, false);
+  assert.match(slow.error, /too slowly/);
+  assert.equal(box.executed.length, before + 1, 'the second capability is never sent');
 });
 
 test('without realtime events the devices are read every 10 s, the socket tried again', async (t) => {

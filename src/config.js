@@ -12,6 +12,25 @@ export const DEFAULTS = {
   homey_address: '',
   api_key: '',
   sensor_interval: SENSOR_INTERVAL.default,
+  // Louis's rule: unlocking, garage doors, valves and alarms stay refused unless allowed.
+  allow_unlock: false,
+  allow_garage_door_control: false,
+  allow_valve_control: false,
+  allow_alarm_control: false,
+};
+
+/** A boolean of the configuration (Gladys may store it as a string). */
+const bool = (raw, fallback) => {
+  if (typeof raw === 'boolean') {
+    return raw;
+  }
+  if (raw === 'true' || raw === 1 || raw === '1') {
+    return true;
+  }
+  if (raw === 'false' || raw === 0 || raw === '0') {
+    return false;
+  }
+  return fallback;
 };
 
 /**
@@ -55,7 +74,8 @@ const bounded = (raw, { min, max, default: fallback }) => {
 };
 
 /**
- * @returns {{ url?: string, discover: boolean, error?: string, apiKey: string, homeyId?: string, sensorInterval: number }}
+ * @returns {{ url?: string, discover: boolean, error?: string, apiKey: string, homeyId?: string, sensorInterval: number,
+ *   allow: { lock: boolean, garage: boolean, valve: boolean, alarm: boolean } }}
  *   `discover`: no address typed, Homey is looked for on the network (mDNS)
  */
 export function normalizeConfig(raw = {}) {
@@ -76,5 +96,11 @@ export function normalizeConfig(raw = {}) {
     apiKey,
     homeyId: String(c.homey_id ?? '').trim() || undefined,
     sensorInterval: Math.round(bounded(c.sensor_interval, SENSOR_INTERVAL)),
+    allow: {
+      lock: bool(c.allow_unlock, false),
+      garage: bool(c.allow_garage_door_control, false),
+      valve: bool(c.allow_valve_control, false),
+      alarm: bool(c.allow_alarm_control, false),
+    },
   };
 }

@@ -31,7 +31,16 @@ test('normalizeConfig: the key, discovery, the saved id, the bounds', () => {
     apiKey: '',
     homeyId: undefined,
     sensorInterval: DEFAULTS.sensor_interval,
+    allow: { lock: false, garage: false, valve: false, alarm: false },
   });
+  const allowed = normalizeConfig({
+    api_key: 'k',
+    allow_unlock: true,
+    allow_garage_door_control: 'true',
+    allow_valve_control: '1',
+    allow_alarm_control: 'no',
+  });
+  assert.deepEqual(allowed.allow, { lock: true, garage: true, valve: true, alarm: false });
   const config = normalizeConfig({
     homey_address: '192.168.1.20',
     api_key: '  key  ',

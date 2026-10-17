@@ -19,6 +19,7 @@ export const API = {
   /** Answers anyone, with the X-Homey-ID and X-Homey-Version headers. */
   ping: '/api/manager/system/ping',
   devices: '/api/manager/devices/device',
+  device: (deviceId) => `/api/manager/devices/device/${encodeURIComponent(deviceId)}`,
   zones: '/api/manager/zones/zone',
   capability: (deviceId, capabilityId) =>
     `/api/manager/devices/device/${encodeURIComponent(deviceId)}/capability/${encodeURIComponent(capabilityId)}`,
@@ -67,6 +68,15 @@ export const TIMINGS = {
   zonesRefresh: 10 * 60_000,
   /** A device created, renamed or moved in Homey: wait for the burst to end. */
   modelDebounce: 2000,
+  /**
+   * Gladys waits 5 s for the answer of a command: it is sent within this time
+   * of its arrival, or refused before anything leaves (never after the ack failed).
+   */
+  setValueDeadline: 3500,
+  /** The request that left may take this much longer to answer. */
+  commandSlack: 1000,
+  /** The shortest timeout of a command request. */
+  commandTimeoutMin: 300,
   /** After a Gladys command without realtime events, the devices are read this soon. */
   commandEcho: 500,
   /** Reconnection delays after a failure (doubled each time, up to the max). */

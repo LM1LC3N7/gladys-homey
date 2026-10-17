@@ -82,6 +82,23 @@ aucune de ces capacités (les enceintes, pour l'instant) sont écartés.
   défaut (0 à 300). Une prise qui remonte sa puissance chaque seconde est
   envoyée à Gladys à ce rythme. Interrupteurs, lumières, boutons, détecteurs de
   mouvement et d'ouverture ne sont jamais retardés.
+- **Autoriser le déverrouillage depuis Gladys** (désactivé par défaut) : sans
+  cette option, Gladys peut verrouiller une serrure, jamais la déverrouiller.
+- **Autoriser le pilotage des portes de garage et portails** (désactivé par
+  défaut) : sans cette option, les commandes des appareils Homey de classe
+  porte de garage ou portail (interrupteur, volet, bouton) sont refusées.
+- **Autoriser le pilotage des vannes et de l'arrosage** (désactivé par défaut) :
+  sans cette option, ouvrir ou couper une vanne ou un arrosage est refusé.
+- **Autoriser le pilotage des alarmes et sirènes** (désactivé par défaut) : sans
+  cette option, armer, désarmer ou couper une alarme ou une sirène est refusé.
+
+Ces commandes restent affichées comme pilotables dans Gladys (les
+fonctionnalités sont figées à la création de l'appareil) : c'est l'intégration
+qui les refuse, avec un message, tant que l'option est désactivée, y compris
+pour les appareils déjà ajoutés. Une fois autorisée, chaque commande de ce
+type relit d'abord l'appareil sur Homey et est refusée si son état est inconnu
+ou si Homey le dit indisponible. La classe prise en compte est celle de Homey
+(ou sa classe virtuelle, choisie dans l'application Homey).
 
 ## Bon à savoir
 

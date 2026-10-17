@@ -217,17 +217,22 @@ export function createClient({ url, apiKey, request = httpRequest }) {
     devices(options = { timeout: TIMINGS.inventoryTimeout }) {
       return this.get(API.devices, options);
     },
+    /** One device, read now (before a guarded command). */
+    device(deviceId, options) {
+      return this.get(API.device(deviceId), options);
+    },
     /** The zones (rooms), by id. */
     zones(options) {
       return this.get(API.zones, options);
     },
     /** Sets one capability; Homey answers once the device driver took it. */
-    setCapability(deviceId, capabilityId, value) {
+    setCapability(deviceId, capabilityId, value, options) {
       transaction += 1;
-      return this.put(API.capability(deviceId, capabilityId), {
-        value,
-        transactionId: `gladys-${Date.now()}-${transaction}`,
-      });
+      return this.put(
+        API.capability(deviceId, capabilityId),
+        { value, transactionId: `gladys-${Date.now()}-${transaction}` },
+        options,
+      );
     },
     close() {
       agent.destroy();

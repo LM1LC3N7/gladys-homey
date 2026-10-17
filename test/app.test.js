@@ -789,6 +789,37 @@ test('Scan publishes the devices again; a deleted device is forgotten', async (t
   assert.ok(true);
 });
 
+test('disconnection then reconnection (Gladys restarted): status, Discovery and badges published again', async (t) => {
+  const { gladys } = await setup(t);
+  const lamp = await created(gladys, 'Lampe salon (Salon)');
+  const published = () => gladys.fake.bodies('POST', '/discovered_device').length;
+  const statuses = gladys.fake.connectionStatuses.length;
+  const discoveries = published();
+  const badges = gladys.fake.transports.length;
+  const before = { status: gladys.fake.connectionStatus, devices: gladys.fake.discoveredDevices };
+  await gladys.disconnect();
+  await gladys.connect();
+  await settle();
+  await settle();
+  assert.ok(gladys.fake.connectionStatuses.length > statuses);
+  assert.deepEqual(gladys.fake.connectionStatus, before.status);
+  assert.equal(published(), discoveries + 1);
+  assert.deepEqual(gladys.fake.discoveredDevices, before.devices);
+  assert.ok(gladys.fake.transports.length > badges);
+  assert.equal(lastTransport(gladys, lamp).transport, DEVICE_TRANSPORTS.LOCAL);
+});
+
+test('reconnection with a configuration error: the error is published again', async (t) => {
+  const { gladys, box } = await setup(t, { homey_address: '192.168.1.20' });
+  const statuses = gladys.fake.connectionStatuses.length;
+  await gladys.disconnect();
+  await gladys.connect();
+  await settle();
+  assert.equal(gladys.fake.connectionStatuses.length, statuses + 1);
+  assert.equal(gladys.fake.connectionStatus.message.en, T.noKey.en);
+  assert.equal(box.calls.length, 0);
+});
+
 test('a configuration change reconnects; the same values do not', async (t) => {
   const { gladys, box } = await setup(t);
   const clients = box.clients.length;

@@ -10,6 +10,11 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+### Fixed
+
+- Status and Discovery republished after Gladys restarts (the transport
+  badges too).
+
 ## [0.1.2] - 2026-10-17
 
 ### Security

@@ -110,6 +110,12 @@ export class HomeyApp {
 
   async start(raw = {}) {
     this.stop();
+    // Gladys keeps the status, the Discovery list and the badges in memory
+    // only: a (re)connection may follow a restart of the core, so all are
+    // published again, never assumed kept.
+    this.lastStatus = undefined;
+    this.publishedDevices = undefined;
+    this.transports.clear();
     const generation = this.generation;
     this.raw = { ...(raw ?? {}) };
     this.config = normalizeConfig(this.raw);

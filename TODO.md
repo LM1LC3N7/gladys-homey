@@ -68,17 +68,27 @@ up to date at the end of every milestone.
 
 ## Decisions
 
-- **Guarded commands** (2026-10-17, Louis's rule): unlocking, and the switch,
-  cover, brightness and button commands of the classes garage door / gate,
-  valve / sprinkler, alarm / siren (class or virtual class, `GUARDED_CLASSES`
-  of src/mapping.js), are refused in `setValue` unless `allow_unlock`,
-  `allow_garage_door_control`, `allow_valve_control`, `allow_alarm_control`
-  is on (all off by default). The features stay writable (frozen at creation,
-  the option can be turned on later); keys and external ids are unchanged.
-  Allowed, the device is read (`GET /api/manager/devices/device/:id`) just
-  before and the command refused on a failed read, an unavailable device or
-  an unknown state. Commands are serialized per device and sent within 3.5 s
-  (Gladys ack: 5 s). To check on a real Homey: the single device endpoint.
+- **Guarded commands** (2026-10-17, Louis's rule): unlocking (`locked` = 0),
+  and the switch, brightness, cover and button commands of the Homey classes
+  (or virtual classes) `garagedoor`, `watervalve` / `sprinkler` / `faucet`,
+  `homealarm` / `smokealarm` / `siren`, `lock` (both ways), or of a device with
+  a `locked`, `garagedoor_closed` or `homealarm_state` capability
+  (`GUARDED_CLASSES`, `GUARDED_CAPABILITIES` of src/mapping.js; the classes of
+  athombv/node-homey-lib, `watervalve`, `sprinkler`, `siren` since Homey 12.0),
+  are refused in `setValue` unless `allow_unlock`, `allow_garage_door_control`,
+  `allow_valve_control`, `allow_alarm_control` is on (all off by default). A
+  valve, siren or gate relay filed under `socket`, `relay`, `other` or
+  `sensor` without those capabilities is not protected (documented). The guard
+  of the mapping is kept on the writer; a device missing from the records is
+  refused. The features stay writable (frozen at creation, the option can be
+  turned on later); keys and external ids are unchanged. Allowed, the device
+  is read (`GET /api/manager/devices/device/:id`) just before and the command
+  refused on a failed read, an unavailable device or an unknown state (so
+  `getable: false` is refused even when allowed). Guarded commands are
+  serialized per device, the others per feature; the deadline (3.5 s, Gladys
+  ack 5 s) is checked before the first request only. Refusals are bilingual,
+  with the manifest labels. To check on a real Homey: the single device
+  endpoint.
 
 - **Own client, not `homey-api`** (Louis's rule: reuse maintained community
   work unless it brings debt). `homey-api` is Athom's official, actively

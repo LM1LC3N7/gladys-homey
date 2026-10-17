@@ -85,8 +85,8 @@
         "fr": "Autoriser le déverrouillage depuis Gladys"
       },
       "description": {
-        "en": "Off by default: Gladys can lock the locks of Homey, never unlock them. On, Gladys can UNLOCK them, from the dashboard, scenes and voice assistants.",
-        "fr": "Désactivé par défaut : Gladys peut verrouiller les serrures de Homey, jamais les déverrouiller. Activé, Gladys peut les DÉVERROUILLER, depuis le tableau de bord, les scènes et les assistants vocaux."
+        "en": "Off by default: Gladys can lock a lock (its Locked feature), never unlock it; the switch, brightness, cover and button of a lock (class lock, or a device with a Locked capability) are refused both ways. On, Gladys can UNLOCK, from the dashboard, scenes and voice assistants.",
+        "fr": "Désactivé par défaut : Gladys peut verrouiller une serrure (sa fonctionnalité Verrouillé), jamais la déverrouiller ; l'interrupteur, la luminosité, le volet et le bouton d'une serrure (classe lock, ou appareil avec la capacité locked) sont refusés dans les deux sens. Activé, Gladys peut DÉVERROUILLER, depuis le tableau de bord, les scènes et les assistants vocaux."
       },
       "required": false,
       "default": false
@@ -99,8 +99,8 @@
         "fr": "Autoriser le pilotage des portes de garage et portails depuis Gladys"
       },
       "description": {
-        "en": "Off by default: the commands of the Homey devices of class garage door or gate are refused. On, Gladys can open and close them.",
-        "fr": "Désactivé par défaut : les commandes des appareils Homey de classe porte de garage ou portail sont refusées. Activé, Gladys peut les ouvrir et les fermer."
+        "en": "Off by default: the switch, brightness, cover and button of the Homey devices of class garagedoor, or with a garagedoor_closed capability (a gate relay too), are refused. A gate relay filed under another class without that capability is not protected. On, Gladys can open and close them.",
+        "fr": "Désactivé par défaut : l'interrupteur, la luminosité, le volet et le bouton des appareils Homey de classe garagedoor, ou avec la capacité garagedoor_closed (un relais de portail aussi), sont refusés. Un relais de portail rangé dans une autre classe sans cette capacité n'est pas protégé. Activé, Gladys peut les ouvrir et les fermer."
       },
       "required": false,
       "default": false
@@ -113,8 +113,8 @@
         "fr": "Autoriser le pilotage des vannes et de l'arrosage depuis Gladys"
       },
       "description": {
-        "en": "Off by default: the commands of the Homey devices of class valve or sprinkler are refused (opening and cutting). On, Gladys can open and close them.",
-        "fr": "Désactivé par défaut : les commandes des appareils Homey de classe vanne ou arrosage sont refusées (ouverture et coupure). Activé, Gladys peut les ouvrir et les fermer."
+        "en": "Off by default: the switch, brightness, cover and button of the Homey devices of class watervalve, sprinkler (Homey 12.0 or later) or faucet are refused (opening and cutting). A valve filed under another class (socket, relay, other) is not protected. On, Gladys can open and close them.",
+        "fr": "Désactivé par défaut : l'interrupteur, la luminosité, le volet et le bouton des appareils Homey de classe watervalve, sprinkler (Homey 12.0 ou plus récent) ou faucet sont refusés (ouverture et coupure). Une vanne rangée dans une autre classe (socket, relay, other) n'est pas protégée. Activé, Gladys peut les ouvrir et les fermer."
       },
       "required": false,
       "default": false
@@ -127,8 +127,8 @@
         "fr": "Autoriser le pilotage des alarmes et sirènes depuis Gladys"
       },
       "description": {
-        "en": "Off by default: the commands of the Homey devices of class alarm or siren are refused (arming, disarming, silencing). On, Gladys can switch them.",
-        "fr": "Désactivé par défaut : les commandes des appareils Homey de classe alarme ou sirène sont refusées (armement, désarmement, arrêt). Activé, Gladys peut les commander."
+        "en": "Off by default: the switch, brightness, cover and button of the Homey devices of class homealarm, smokealarm or siren (Homey 12.0 or later), or with a homealarm_state capability, are refused (arming, disarming, silencing). A siren filed under another class (socket, relay, other, sensor) is not protected. On, Gladys can switch them.",
+        "fr": "Désactivé par défaut : l'interrupteur, la luminosité, le volet et le bouton des appareils Homey de classe homealarm, smokealarm ou siren (Homey 12.0 ou plus récent), ou avec la capacité homealarm_state, sont refusés (armement, désarmement, arrêt). Une sirène rangée dans une autre classe (socket, relay, other, sensor) n'est pas protégée. Activé, Gladys peut les commander."
       },
       "required": false,
       "default": false

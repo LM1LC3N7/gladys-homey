@@ -229,22 +229,34 @@ const MAIN = new Set(['onoff', 'windowcoverings_state', 'locked']);
 // features stay writable: they are frozen when the user creates the device,
 // and the option can be turned on later.
 
-/** Homey class (or virtual class) -> the option its switch and cover commands need. */
+/**
+ * Homey class (or virtual class) -> the option its switch, cover and button
+ * commands need. The classes of athombv/node-homey-lib (assets/device/classes);
+ * watervalve, sprinkler and siren since Homey 12.0. A valve, a siren or a gate
+ * relay filed under another class (socket, relay, other, sensor) is only
+ * caught by GUARDED_CAPABILITIES.
+ */
 export const GUARDED_CLASSES = {
   garagedoor: 'garage',
-  gate: 'garage',
-  valve: 'valve',
   watervalve: 'valve',
-  gasvalve: 'valve',
   sprinkler: 'valve',
-  irrigation: 'valve',
+  faucet: 'valve',
   homealarm: 'alarm',
-  alarm: 'alarm',
+  smokealarm: 'alarm',
   siren: 'alarm',
-  securitysystem: 'alarm',
-  // A lock driving its bolt with a switch: both ways need allow_unlock.
+  // A lock driving its bolt with a switch or a button: both ways need allow_unlock.
   lock: 'lock-any',
 };
+
+/**
+ * A capability telling what the device is, whatever its class (checked first,
+ * in this order): its switch, cover and button commands need the option.
+ */
+const GUARDED_CAPABILITIES = [
+  ['locked', 'lock-any'],
+  ['garagedoor_closed', 'garage'],
+  ['homealarm_state', 'alarm'],
+];
 
 /** The commands guarded on such a class: what opens, cuts, arms or disarms. */
 const GUARDED_BASES = new Set([
@@ -259,7 +271,7 @@ const GUARDED_BASES = new Set([
  * The guard of a command on this device record (read just now when it matters):
  *   'lock'      the locked capability (unlocking needs allow_unlock),
  *   'lock-any'  a switch or a cover of a lock (allow_unlock both ways),
- *   'garage' | 'valve' | 'alarm'  a switch or a cover of such a class,
+ *   'garage' | 'valve' | 'alarm'  a switch or a cover of such a device,
  *   undefined   no guard.
  * @param {{ base: string }} writer
  */
@@ -269,6 +281,12 @@ export function guardOf(writer, device) {
   }
   if (!GUARDED_BASES.has(writer?.base)) {
     return undefined;
+  }
+  const caps = Array.isArray(device?.capabilities) ? device.capabilities : [];
+  for (const [base, guard] of GUARDED_CAPABILITIES) {
+    if (caps.some((c) => typeof c === 'string' && baseOf(c) === base)) {
+      return guard;
+    }
   }
   for (const cls of [device?.virtualClass, device?.class]) {
     if (typeof cls === 'string' && Object.hasOwn(GUARDED_CLASSES, cls)) {
@@ -350,7 +368,10 @@ class DeviceMapper {
     }
     if (write) {
       // `capabilityId` and `base`: what the guards of src/app.js look at.
-      this.writers[key] = { write, capabilityId: caps[0], base: baseOf(caps[0]) };
+      const writer = { write, capabilityId: caps[0], base: baseOf(caps[0]) };
+      // The guard at mapping time: kept even if a later record loses its class.
+      writer.guard = guardOf(writer, this.d);
+      this.writers[key] = writer;
     }
     if (throttle) {
       this.throttled.add(key);

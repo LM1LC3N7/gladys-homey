@@ -153,6 +153,13 @@ test('the client against the simulated Homey', async (t) => {
   const lamp = Object.values(devices).find((d) => d.name === 'Lampe salon');
   assert.deepEqual(await client.setCapability(lamp.id, 'dim', 0.3), {});
   assert.equal(sim.devices[lamp.id].capabilitiesObj.dim.value, 0.3);
+  // One device read before a guarded command, over real HTTP.
+  const one = await client.device(lamp.id, { timeout: 2000 });
+  assert.equal(one.id, lamp.id);
+  assert.equal(one.capabilitiesObj.dim.value, 0.3);
+  assert.equal(sim.requests.at(-1).path, `/api/manager/devices/device/${lamp.id}`);
+  assert.equal(sim.requests.at(-1).auth, `Bearer ${KEY}`);
+  await assert.rejects(client.device('missing'), (err) => err.kind === 'notfound');
   await assert.rejects(client.setCapability(lamp.id, 'nope', 1), (err) => err.kind === 'notfound');
   sim.zonesForbidden = true;
   await assert.rejects(

@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { DEFAULTS } from '../src/config.js';
 import { ACTIONS, MDNS_SERVICE, SENSOR_INTERVAL } from '../src/constants.js';
+import { GUARD_OPTIONS, REFUSALS } from '../src/i18n.js';
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const manifest = JSON.parse(read('gladys-assistant-integration.json'));
@@ -100,6 +101,18 @@ test('the configuration matches the code', () => {
       'object',
       `${field.key}: placeholder must be multi-language`,
     );
+  }
+});
+
+test('the refusals name the options with the labels of the manifest, off by default', () => {
+  const fields = Object.fromEntries(manifest.config_schema.map((f) => [f.key, f]));
+  for (const [option, [key, label]] of Object.entries(GUARD_OPTIONS)) {
+    assert.ok(fields[key], key);
+    assert.equal(fields[key].type, 'boolean');
+    assert.equal(fields[key].default, false, `${key} is off by default`);
+    assert.deepEqual(fields[key].label, label, key);
+    const text = REFUSALS.denied(option);
+    assert.ok(text.includes(label.en) && text.includes(label.fr), option);
   }
 });
 

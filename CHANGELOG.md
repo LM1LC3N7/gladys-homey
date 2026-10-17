@@ -12,23 +12,34 @@ the notes of the version's GitHub Release.
 
 ### Security
 
-- Unlocking a lock from Gladys is now refused unless the new option "Allow
-  unlocking from Gladys" (`allow_unlock`, off by default) is on; locking is
-  always allowed. If you unlocked from Gladys (dashboard, scenes, voice
-  assistants), turn the option on.
-- The commands of Homey devices of class (or virtual class) garage door or
-  gate, valve or sprinkler, alarm or siren (their switch, cover, brightness and
-  button) are now refused unless their new option is on:
+- Unlocking a lock (its `locked` feature) from Gladys is now refused unless the
+  new option "Allow unlocking from Gladys" (`allow_unlock`, off by default) is
+  on; locking through `locked` is always allowed. The switch, brightness, cover
+  and button of a lock (class `lock`, or a device with a `locked` capability)
+  need the option both ways. If you unlocked from Gladys (dashboard, scenes,
+  voice assistants), turn the option on.
+- The switch, brightness, cover and button of the Homey devices of class (or
+  virtual class) `garagedoor`, `watervalve`, `sprinkler`, `faucet`,
+  `homealarm`, `smokealarm` or `siren`, or with a `garagedoor_closed` or
+  `homealarm_state` capability, are now refused unless their new option is on:
   `allow_garage_door_control`, `allow_valve_control`, `allow_alarm_control`
-  (off by default). The check runs on every command, so devices added before
-  this version are covered too; their keys and external ids do not change.
+  (off by default). `watervalve`, `sprinkler` and `siren` exist since Homey
+  12.0. A valve, a siren or a gate relay filed under another class (`socket`,
+  `relay`, `other`, `sensor`) without those capabilities is not protected.
+- The check runs on every command, so devices added before this version are
+  covered too; their keys and external ids do not change. A command for a
+  device Homey no longer knows (deleted, model not rebuilt yet) is refused.
 - Once allowed, such a command reads the device from Homey just before, and is
   refused when that read fails, when Homey says the device is unavailable, or
-  when the state is unknown; it is decided on the state read, never on the one
-  in memory.
-- The commands of a device run one at a time, and are sent within 3.5 s of
-  their arrival or refused before anything leaves (Gladys waits 5 s for the
-  answer).
+  when the state is unknown (so a capability with `getable` false is refused
+  even with the option); it is decided on the state read, never on the one in
+  memory.
+- Guarded commands run one at a time per device, the others one at a time per
+  feature. A command not sent within 3.5 s of its arrival is refused before its
+  first request leaves (Gladys waits 5 s for the answer); a command of several
+  requests goes on once its first request left.
+- The refusal messages are in English and French and name the option to turn
+  on.
 
 ### Changed
 

@@ -213,3 +213,64 @@ export const T = {
     },
   },
 };
+
+/**
+ * The labels of the options of guarded commands, exactly as in the manifest
+ * (checked by test/manifest.test.js): option -> [manifest key, label].
+ */
+export const GUARD_OPTIONS = {
+  lock: [
+    'allow_unlock',
+    { en: 'Allow unlocking from Gladys', fr: 'Autoriser le déverrouillage depuis Gladys' },
+  ],
+  garage: [
+    'allow_garage_door_control',
+    {
+      en: 'Allow garage door and gate control from Gladys',
+      fr: 'Autoriser le pilotage des portes de garage et portails depuis Gladys',
+    },
+  ],
+  valve: [
+    'allow_valve_control',
+    {
+      en: 'Allow valve and sprinkler control from Gladys',
+      fr: "Autoriser le pilotage des vannes et de l'arrosage depuis Gladys",
+    },
+  ],
+  alarm: [
+    'allow_alarm_control',
+    {
+      en: 'Allow alarm and siren control from Gladys',
+      fr: 'Autoriser le pilotage des alarmes et sirènes depuis Gladys',
+    },
+  ],
+};
+
+/** The refusals of a command: the ack of Gladys carries one text, given in both languages. */
+const both = (en, fr) => `${en} / ${fr}`;
+export const REFUSALS = {
+  denied: (option) => {
+    const label = GUARD_OPTIONS[option][1];
+    return both(
+      `Command refused: turn on "${label.en}" in the Homey integration settings.`,
+      `Commande refusée : activez « ${label.fr} » dans les réglages de l'intégration Homey.`,
+    );
+  },
+  tooSlow: both(
+    'Homey answered too slowly: command not sent.',
+    'Homey a répondu trop lentement : commande non envoyée.',
+  ),
+  unknownDevice: both(
+    'This device is not known to Homey right now: command refused.',
+    "Cet appareil n'est pas connu de Homey en ce moment : commande refusée.",
+  ),
+  noAnswer: both(
+    'State unknown, Homey did not answer: command refused.',
+    "État inconnu, Homey n'a pas répondu : commande refusée.",
+  ),
+  unknownState: both('State unknown: command refused.', 'État inconnu : commande refusée.'),
+  unavailable: both(
+    'The device is unavailable in Homey, its state may be stale: command refused.',
+    "L'appareil est indisponible dans Homey, son état est peut-être périmé : commande refusée.",
+  ),
+};

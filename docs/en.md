@@ -79,21 +79,33 @@ left out.
   this pace. Switches, lights, buttons, motion and opening sensors are never
   delayed.
 - **Allow unlocking from Gladys** (off by default): without it, Gladys can lock
-  a lock, never unlock it.
+  a lock through its "Locked" feature (the `locked` capability), never unlock
+  it. The switch, brightness, cover or button of a lock (class `lock`, or a
+  device with the `locked` capability) need this option both ways.
 - **Allow garage door and gate control** (off by default): without it, the
-  commands of the Homey devices of class garage door or gate (switch, cover,
-  button) are refused.
-- **Allow valve and sprinkler control** (off by default): without it, opening
-  or cutting a valve or a sprinkler is refused.
-- **Allow alarm and siren control** (off by default): without it, arming,
-  disarming or silencing an alarm or a siren is refused.
+  switch, brightness, cover and button of the devices of class `garagedoor`, or
+  with the `garagedoor_closed` capability, are refused.
+- **Allow valve and sprinkler control** (off by default): the same for the
+  classes `watervalve`, `sprinkler` and `faucet` (opening and cutting).
+- **Allow alarm and siren control** (off by default): the same for the classes
+  `homealarm`, `smokealarm` and `siren`, or the devices with the
+  `homealarm_state` capability (arming, disarming, silencing).
+
+The classes are the Homey ones (or the virtual class chosen in the Homey app);
+`watervalve`, `sprinkler` and `siren` exist since Homey 12.0. **Limit**: a
+valve, a siren or a gate relay filed under another class (`socket`, `relay`,
+`other`, `sensor`) is protected only when it has one of the capabilities above;
+otherwise it is driven like a plug. Give it the right virtual class in Homey.
 
 These commands still show as controllable in Gladys (the features are frozen
-when the device is created): the integration refuses them, with a message,
-while the option is off, devices added earlier included. Once allowed, each
-such command first reads the device again from Homey and is refused when its
-state is unknown or Homey says it is unavailable. The class used is the Homey
-one (or its virtual class, chosen in the Homey app).
+when the device is created): the integration refuses them, with a message
+naming the option, while the option is off, devices added earlier included.
+Once allowed, each such command first reads the device again from Homey and is
+refused when Homey does not answer, says the device is unavailable, or the
+state is unknown (a capability Homey cannot read back, `getable` false, is
+therefore refused even with the option). A command that could not leave within
+3.5 s is refused without sending anything; a command of several requests
+(colour, colour temperature) goes to the end once its first request left.
 
 ## Good to know
 

@@ -384,12 +384,19 @@ test('alarms: motion, contact (open is 0 in Gladys), leak, smoke, CO, tamper, ba
 });
 
 test('the guarded commands: by capability and by class or virtual class', () => {
-  const device = (cls, virtualClass = null) => ({
+  const device = (cls, virtualClass = null, extra = []) => ({
     id: 'g',
     name: 'G',
     class: cls,
     virtualClass,
-    capabilities: ['onoff', 'windowcoverings_state', 'dim', 'button', 'target_temperature'],
+    capabilities: [
+      'onoff',
+      'windowcoverings_state',
+      'dim',
+      'button',
+      'target_temperature',
+      ...extra,
+    ],
     capabilitiesObj: {},
   });
   const guards = (d) => {
@@ -403,17 +410,30 @@ test('the guarded commands: by capability and by class or virtual class', () => 
     button: g,
     target_temperature: undefined,
   });
+  // The classes of athombv/node-homey-lib.
   assert.deepEqual(guards(device('socket')), all(undefined));
-  assert.deepEqual(guards(device('valve')), all('valve'));
+  assert.deepEqual(guards(device('relay')), all(undefined));
+  assert.deepEqual(guards(device('watervalve')), all('valve'));
+  assert.deepEqual(guards(device('faucet')), all('valve'));
   assert.deepEqual(guards(device('other', 'sprinkler')), all('valve'));
   assert.deepEqual(guards(device('garagedoor')), all('garage'));
   assert.deepEqual(guards(device('socket', 'garagedoor')), all('garage'));
   assert.deepEqual(guards(device('homealarm')), all('alarm'));
+  assert.deepEqual(guards(device('smokealarm')), all('alarm'));
   assert.deepEqual(guards(device('siren')), all('alarm'));
   assert.deepEqual(guards(device('lock')), all('lock-any'));
+  // Another class, told by a capability.
+  const withLock = guards(device('other', null, ['locked']));
+  assert.equal(withLock.locked, 'lock');
+  assert.deepEqual({ ...withLock, locked: undefined }, { ...all('lock-any'), locked: undefined });
+  assert.deepEqual(guards(device('other', null, ['garagedoor_closed'])), all('garage'));
+  assert.deepEqual(guards(device('sensor', null, ['homealarm_state'])), all('alarm'));
+  assert.deepEqual(guards(device('relay', null, ['locked.2'])).onoff, 'lock-any');
   assert.equal(guardOf({ base: 'onoff' }, { class: 'constructor' }), undefined);
+  // The guard of the mapping is kept on the writer.
+  assert.equal(mapDevice(device('watervalve')).writers.onoff.guard, 'valve');
   // The keys (external ids) are unchanged.
-  assert.deepEqual(Object.keys(mapDevice(device('valve')).writers), Object.keys(all()));
+  assert.deepEqual(Object.keys(mapDevice(device('watervalve')).writers), Object.keys(all()));
 });
 
 test('locks and buttons', () => {

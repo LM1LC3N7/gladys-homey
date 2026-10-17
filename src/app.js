@@ -18,7 +18,7 @@ import { REALTIME, TIMINGS } from './constants.js';
 import { buildModel, emptyModel } from './devices.js';
 import { homeyCandidates } from './discovery.js';
 import { HomeyError, createClient } from './homey.js';
-import { T } from './i18n.js';
+import { REFUSALS, T } from './i18n.js';
 import { asList, buildInventory, zoneNames } from './inventory.js';
 import { guardOf } from './mapping.js';
 import { StatePublisher } from './publisher.js';
@@ -890,32 +890,22 @@ export class HomeyApp {
     if (guard === 'lock' && Number(value) > 0) {
       return;
     }
-    if ((guard === 'lock' || guard === 'lock-any') && !allow.lock) {
-      throw new Error(
-        'Unlocking from Gladys is off: turn on "Allow unlocking" in the Homey integration settings',
-      );
-    }
-    if (guard === 'garage' && !allow.garage) {
-      throw new Error(
-        'Garage door control from Gladys is off: turn on "Allow garage door control" in the Homey integration settings',
-      );
-    }
-    if (guard === 'valve' && !allow.valve) {
-      throw new Error(
-        'Valve and sprinkler control from Gladys is off: turn on "Allow valve control" in the Homey integration settings',
-      );
-    }
-    if (guard === 'alarm' && !allow.alarm) {
-      throw new Error(
-        'Alarm and siren control from Gladys is off: turn on "Allow alarm control" in the Homey integration settings',
-      );
+    const option = {
+      lock: 'lock',
+      'lock-any': 'lock',
+      garage: 'garage',
+      valve: 'valve',
+      alarm: 'alarm',
+    }[guard];
+    if (option && !allow[option]) {
+      throw new Error(REFUSALS.denied(option));
     }
   }
 
-  /** Refuses once the 5 s ack of Gladys is too near: nothing leaves after that. */
+  /** Refuses when the 5 s ack of Gladys is too near, before the first request leaves. */
   checkDeadline(deadline) {
     if (this.now() > deadline) {
-      throw new Error('Homey answered too slowly: command not sent');
+      throw new Error(REFUSALS.tooSlow);
     }
   }
 
@@ -936,21 +926,20 @@ export class HomeyApp {
       device = await client.device(id, { timeout: this.timeoutBefore(deadline) });
     } catch (err) {
       this.logger.warn(`Device ${id}: state not read before a guarded command (${err.message})`);
-      throw new Error('State unknown: Homey did not answer, command refused', { cause: err });
+      throw new Error(REFUSALS.noAnswer, { cause: err });
     }
     if (!device || device.id !== id) {
-      throw new Error('State unknown: command refused');
+      throw new Error(REFUSALS.unknownState);
     }
     this.applyDevice(device);
     if (device.available === false || device.ready === false) {
-      throw new Error(
-        'The device is unavailable in Homey: its state may be stale, command refused',
-      );
+      throw new Error(REFUSALS.unavailable);
     }
+    // A capability Homey cannot read (getable false) has no value: refused too.
     if (capabilityId !== undefined) {
       const v = device.capabilitiesObj?.[capabilityId]?.value;
       if (v === undefined || v === null) {
-        throw new Error('State unknown: command refused');
+        throw new Error(REFUSALS.unknownState);
       }
     }
     return device;
@@ -968,19 +957,28 @@ export class HomeyApp {
     if (!writer || id === undefined) {
       throw new Error(`${feature.name ?? feature.external_id} cannot be controlled`);
     }
-    // Checked on the class known so far, then on the class read just before sending.
-    this.checkAllowed(guardOf(writer, this.records.get(id)), value);
+    // The guard of the record known so far, or the one of the mapping: an
+    // unknown device (deleted in Homey, model not rebuilt yet) is refused.
+    const guardNow = () => {
+      const record = this.records.get(id);
+      if (!record) {
+        throw new Error(REFUSALS.unknownDevice);
+      }
+      return { record, guard: guardOf(writer, record) ?? writer.guard };
+    };
+    this.checkAllowed(guardNow().guard, value);
     if (!this.client || !this.online) {
       throw new Error('Homey is not connected');
     }
-    await this.serialized(id, async () => {
+    // Guarded commands one at a time per device; the others per feature.
+    const key = writer.guard ? id : `${id}:${feature.external_id}`;
+    await this.serialized(key, async () => {
       const client = this.client;
       if (!client || !this.online) {
         throw new Error('Homey is not connected');
       }
       this.checkDeadline(deadline);
-      let record = this.records.get(id);
-      let guard = guardOf(writer, record);
+      let { record, guard } = guardNow();
       // The option may have changed while the command waited.
       this.checkAllowed(guard, value);
       // Locking is always allowed: sent at once, like the other commands.
@@ -988,12 +986,12 @@ export class HomeyApp {
         // A button has no state of its own: only the device is checked.
         const stateOf = writer.base === 'button' ? undefined : writer.capabilityId;
         record = await this.freshRecord(client, id, stateOf, deadline);
-        guard = guardOf(writer, record);
+        guard = guardOf(writer, record) ?? writer.guard;
         this.checkAllowed(guard, value);
         if (guard === 'lock') {
           const locked = record.capabilitiesObj[writer.capabilityId].value;
           if (typeof locked !== 'boolean') {
-            throw new Error('State unknown: command refused');
+            throw new Error(REFUSALS.unknownState);
           }
           if (locked === Number(value) > 0) {
             this.logger.debug(`${feature.external_id}: already in place, nothing sent`);
@@ -1002,9 +1000,10 @@ export class HomeyApp {
         }
       }
       const calls = writer.write(value, record);
+      // Past the deadline nothing leaves; once a request left, the others follow it.
+      this.checkDeadline(deadline);
+      this.checkAllowed(guard, value);
       for (const call of calls) {
-        this.checkDeadline(deadline);
-        this.checkAllowed(guard, value);
         await client.setCapability(id, call.capabilityId, call.value, {
           timeout: this.timeoutBefore(deadline, TIMINGS.commandSlack),
         });

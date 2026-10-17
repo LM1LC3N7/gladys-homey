@@ -83,22 +83,39 @@ aucune de ces capacités (les enceintes, pour l'instant) sont écartés.
   envoyée à Gladys à ce rythme. Interrupteurs, lumières, boutons, détecteurs de
   mouvement et d'ouverture ne sont jamais retardés.
 - **Autoriser le déverrouillage depuis Gladys** (désactivé par défaut) : sans
-  cette option, Gladys peut verrouiller une serrure, jamais la déverrouiller.
+  cette option, Gladys peut verrouiller une serrure par sa fonctionnalité
+  « Verrouillé » (capacité `locked`), jamais la déverrouiller. L'interrupteur,
+  la luminosité, le volet ou le bouton d'une serrure (classe `lock`, ou appareil
+  qui a la capacité `locked`) demandent cette option dans les deux sens.
 - **Autoriser le pilotage des portes de garage et portails** (désactivé par
-  défaut) : sans cette option, les commandes des appareils Homey de classe
-  porte de garage ou portail (interrupteur, volet, bouton) sont refusées.
+  défaut) : sans cette option, l'interrupteur, la luminosité, le volet et le
+  bouton des appareils de classe `garagedoor`, ou qui ont la capacité
+  `garagedoor_closed`, sont refusés.
 - **Autoriser le pilotage des vannes et de l'arrosage** (désactivé par défaut) :
-  sans cette option, ouvrir ou couper une vanne ou un arrosage est refusé.
-- **Autoriser le pilotage des alarmes et sirènes** (désactivé par défaut) : sans
-  cette option, armer, désarmer ou couper une alarme ou une sirène est refusé.
+  même chose pour les classes `watervalve`, `sprinkler` et `faucet` (ouverture
+  et coupure).
+- **Autoriser le pilotage des alarmes et sirènes** (désactivé par défaut) :
+  même chose pour les classes `homealarm`, `smokealarm` et `siren`, ou les
+  appareils qui ont la capacité `homealarm_state` (armement, désarmement,
+  arrêt).
+
+Les classes sont celles de Homey (ou la classe virtuelle choisie dans
+l'application Homey) ; `watervalve`, `sprinkler` et `siren` existent depuis
+Homey 12.0. **Limite** : une vanne, une sirène ou un relais de portail rangés
+dans une autre classe (`socket`, `relay`, `other`, `sensor`) ne sont protégés
+que s'ils ont l'une des capacités ci-dessus ; sinon ils se pilotent comme une
+prise. Donnez-leur la bonne classe virtuelle dans Homey.
 
 Ces commandes restent affichées comme pilotables dans Gladys (les
 fonctionnalités sont figées à la création de l'appareil) : c'est l'intégration
-qui les refuse, avec un message, tant que l'option est désactivée, y compris
-pour les appareils déjà ajoutés. Une fois autorisée, chaque commande de ce
-type relit d'abord l'appareil sur Homey et est refusée si son état est inconnu
-ou si Homey le dit indisponible. La classe prise en compte est celle de Homey
-(ou sa classe virtuelle, choisie dans l'application Homey).
+qui les refuse, avec un message qui nomme l'option, tant que l'option est
+désactivée, y compris pour les appareils déjà ajoutés. Une fois autorisée,
+chaque commande de ce type relit d'abord l'appareil sur Homey et est refusée si
+Homey ne répond pas, s'il dit l'appareil indisponible, ou si l'état est inconnu
+(une capacité que Homey ne sait pas relire, `getable` à false, est donc
+refusée même avec l'option). Une commande qui n'a pas pu partir dans les 3,5 s
+est refusée sans rien envoyer ; une commande en plusieurs appels (couleur,
+température de couleur) va jusqu'au bout une fois le premier appel parti.
 
 ## Bon à savoir
 

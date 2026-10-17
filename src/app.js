@@ -94,6 +94,8 @@ export class HomeyApp {
     this.liveTimer = undefined;
     this.reading = false;
     this.failures = 0;
+    this.nextOpenAt = 0;
+    this.failedFor = undefined;
     this.lastError = undefined;
     this.rediscoveredAt = -Infinity;
     this.scanning = undefined;
@@ -108,7 +110,12 @@ export class HomeyApp {
 
   // --- Lifecycle -------------------------------------------------------------
 
-  async start(raw = {}) {
+  /**
+   * (Re)start. `reconnect`: a (re)connection to Gladys, which keeps the wait
+   * after a failure (a refused key: TIMINGS.authRetry) for the same address
+   * and key; a configuration saved by the user tries at once.
+   */
+  async start(raw = {}, { reconnect = false } = {}) {
     this.stop();
     // Gladys keeps the status, the Discovery list and the badges in memory
     // only: a (re)connection may follow a restart of the core, so all are
@@ -120,6 +127,15 @@ export class HomeyApp {
     this.raw = { ...(raw ?? {}) };
     this.config = normalizeConfig(this.raw);
     this.refreshCreated();
+    const waiting =
+      reconnect &&
+      this.failures > 0 &&
+      this.failedFor === this.identity() &&
+      this.now() < this.nextOpenAt;
+    if (!waiting) {
+      this.failures = 0;
+      this.nextOpenAt = 0;
+    }
     if (this.config.error) {
       await this.setStatus(false, T.configError(this.config.error));
       return;
@@ -130,8 +146,31 @@ export class HomeyApp {
     });
     this.running = true;
     this.publisher.start();
+    if (waiting) {
+      // Same failure, same deadline: nothing is sent to Homey before it.
+      await this.setStatus(false, T.failure(this.lastError));
+      if (this.model.devices.length > 0) {
+        await this.gladys
+          .publishDiscoveredDevices(this.model.devices)
+          .then(() => {
+            this.publishedDevices = JSON.stringify(this.model.devices);
+          })
+          .catch((err) =>
+            this.logger.warn(`Publishing the discovered devices failed: ${err.message}`),
+          );
+      }
+      await this.publishAllTransports();
+      this.schedule(generation, this.nextOpenAt - this.now(), () => this.open(generation));
+      return;
+    }
     await this.setStatus(false, T.connecting);
     await this.open(generation);
+  }
+
+  /** What a wait after a failure is about: the address, the discovery, the key. */
+  identity() {
+    const c = this.config;
+    return JSON.stringify([c.url ?? null, c.discover, c.apiKey]);
   }
 
   /** The configuration changed: reconnect, unless only what the integration saved itself did. */
@@ -164,7 +203,8 @@ export class HomeyApp {
     this.client = null;
     this.online = false;
     this.reading = false;
-    this.failures = 0;
+    // The failures (and the wait they set) are kept: a reconnection to Gladys
+    // does not shorten the wait after a refused key; start() decides.
     this.liveFailures = 0;
   }
 
@@ -324,6 +364,8 @@ export class HomeyApp {
       }
       this.online = true;
       this.failures = 0;
+      this.nextOpenAt = 0;
+      this.failedFor = undefined;
       this.lastError = undefined;
       this.logger.info(
         `Connected to Homey ${homey.version ?? ''} (${homey.id}) at ${url}: ${this.model.devices.length} devices offered`,
@@ -356,6 +398,8 @@ export class HomeyApp {
     } else {
       this.logger.error('Homey: unexpected failure', err);
     }
+    this.nextOpenAt = this.now() + delay;
+    this.failedFor = this.identity();
     await this.setStatus(false, T.failure(err));
     await this.publishAllTransports();
     this.schedule(generation, delay, () => this.open(generation));

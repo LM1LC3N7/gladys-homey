@@ -21,12 +21,15 @@ export function registerHandlers(gladys, app, logger) {
   // Configuration changed by the user (or the address found on the network, saved).
   gladys.onConfigUpdated((config) => app.configUpdated(config));
 
-  // Connection lifecycle (also after every reconnection to Gladys).
+  // Connection lifecycle (also after every reconnection to Gladys): a
+  // reconnection keeps the wait after a failure (a refused key included);
+  // nothing is read from Homey while Gladys is away.
   gladys.on('connected', async () => {
     try {
-      await app.start(await gladys.getConfig());
+      await app.start(await gladys.getConfig(), { reconnect: true });
     } catch (err) {
       logger?.error('Start failed', err);
     }
   });
+  gladys.on('disconnected', () => app.stop());
 }

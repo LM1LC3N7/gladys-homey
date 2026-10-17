@@ -14,6 +14,11 @@ the notes of the version's GitHub Release.
 
 - Status and Discovery republished after Gladys restarts (the transport
   badges too).
+- A refused API key (or any failure) is no longer tried again at every
+  reconnection to Gladys: the wait (5 minutes for a refused key, growing for
+  the other failures) is kept for the same address and key; saving the
+  configuration tries at once. Nothing is read from Homey while Gladys is
+  away.
 
 ## [0.1.2] - 2026-10-17
 

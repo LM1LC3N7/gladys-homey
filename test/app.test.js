@@ -613,6 +613,32 @@ test('a refused API key is said so and retried slowly', async (t) => {
   assert.equal(box.callsOf('devices').length, reads + 1);
 });
 
+test('a refused API key: a reconnection to Gladys keeps the wait; saving tries at once', async (t) => {
+  const config = { ...CONFIG, api_key: 'not-the-key' };
+  const { gladys, box, tick } = await setup(t, config);
+  const calls = box.calls.length;
+  const before = gladys.fake.connectionStatus;
+  assert.equal(before.message.en, T.failure(new HomeyError('auth', 'x')).en);
+  const statuses = gladys.fake.connectionStatuses.length;
+  await tick(TIMINGS.authRetry / 2);
+  await gladys.disconnect();
+  await tick(TIMINGS.authRetry / 4);
+  await gladys.connect();
+  await settle();
+  assert.equal(box.calls.length, calls, 'nothing sent to Homey at the reconnection');
+  assert.equal(gladys.fake.connectionStatuses.length, statuses + 1, 'the status said again');
+  assert.deepEqual(gladys.fake.connectionStatus, before);
+  await tick(TIMINGS.authRetry / 4 - 1_000);
+  assert.equal(box.calls.length, calls, 'not before the deadline');
+  await tick(1_000);
+  assert.ok(box.calls.length > calls, 'tried again at the deadline');
+  // Saving the configuration (same key) tries at once.
+  const tried = box.calls.length;
+  await gladys.fake.configUpdated(config);
+  await settle();
+  assert.ok(box.calls.length > tried);
+});
+
 test('the configuration errors are shown, nothing is called', async (t) => {
   const { gladys, box } = await setup(t, { homey_address: '192.168.1.20' });
   assert.equal(gladys.fake.connectionStatus.message.en, T.noKey.en);
